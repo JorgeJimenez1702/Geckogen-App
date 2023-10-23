@@ -87,6 +87,7 @@ const Register = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#FFF',
     flex: 1,
     justifyContent: 'center',
     padding: 20,
