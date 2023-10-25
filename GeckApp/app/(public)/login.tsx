@@ -33,7 +33,7 @@ const Login = () => {
 
     return (
         <View style={styles.container}>
-            {/*<Spinner visible={loading} />*/}
+            <Spinner visible={loading} />
             <View style={styles.logoContainer}>
                 <Text style={styles.logoLetters}>LOGO</Text>
             </View>

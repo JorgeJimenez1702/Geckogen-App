@@ -9,6 +9,7 @@ const PublicLayout = () => {
           backgroundColor: '#FFF',
         },
         headerTintColor: '#000',
+        
       }}>
       <Stack.Screen
         name="welcome"
@@ -23,7 +24,7 @@ const PublicLayout = () => {
       <Stack.Screen
         name="register"
         options={{
-          headerTitle: 'Create Account',
+          headerTitle: 'Sign Up',
         }}></Stack.Screen>
       <Stack.Screen
         name="reset"
