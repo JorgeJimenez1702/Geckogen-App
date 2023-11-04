@@ -21,28 +21,58 @@ const TabsPage = () => {
   const { isSignedIn } = useAuth();
 
   return (
-    <Tabs
+
+      <Tabs
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#6c47ff',
+          backgroundColor: '#FFFFFF',
         },
-        headerTintColor: '#fff',
+        headerTintColor: '#000000',
       }}>
+
       <Tabs.Screen
         name="home"
         options={{
           headerTitle: 'Home',
+          headerTitleStyle: { fontSize: 14 },
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, size }) => <Ionicons name="home-outline" size={size} color={color} />,
           tabBarLabel: 'Home',
+        }}
+        redirect={!isSignedIn}
+      />
+        <Tabs.Screen
+        name="mygecko"
+        options={{
+          headerTitle: 'My Gecko',
+          headerTitleStyle: { fontSize: 14 },
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />,
+          tabBarLabel: 'My Gecko',
+          headerRight: () => <LogoutButton />,
+        }}
+        redirect={!isSignedIn}
+      />
+         <Tabs.Screen
+        name="terrarium"
+        options={{
+          headerTitle: 'Terrarium',
+          headerTitleStyle: { fontSize: 14 },
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />,
+          tabBarLabel: 'Terrarium',
+          headerRight: () => <LogoutButton />,
         }}
         redirect={!isSignedIn}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          headerTitle: 'My Profile',
+          headerTitle: 'Account',
+          headerTitleStyle: { fontSize: 14 },
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />,
-          tabBarLabel: 'My Profile',
+          tabBarLabel: 'Account',
           headerRight: () => <LogoutButton />,
         }}
         redirect={!isSignedIn}
