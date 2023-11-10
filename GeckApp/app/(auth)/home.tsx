@@ -1,6 +1,7 @@
-import { StyleSheet, View, Text, Image} from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions} from 'react-native';
 import React from 'react';
 import PagerView from 'react-native-pager-view';
+import {SimpleLineIcons } from '@expo/vector-icons';
 import { useUser } from '@clerk/clerk-expo';
 
 
@@ -24,13 +25,17 @@ return (
 
     <Text style={styles.additionalText}>New featured products</Text>
 
-    <PagerView style={styles.pagerView} initialPage={0}> 
-      {images.map((imageUrl, index) => (
-        <View key={index} style={styles.page}>
-          <Image source={{ uri: imageUrl }} style={styles.image} />
+    <PagerView
+    style={styles.pagerView}initialPage={0}>
+    {images.map((imageUrl, index) => (
+      <View key={index} style={styles.page}>
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+        <View style={styles.arrowContainer}>
+          <SimpleLineIcons name="arrow-right" size={40} color="#000000" />
         </View>
-      ))}
-    </PagerView>
+      </View>
+    ))}
+  </PagerView>
 
     <View style={styles.secondStaticbox}>
       <Text style={styles.secondStaticboxText}>New advances in genetics</Text>
@@ -40,21 +45,23 @@ return (
 );
 }
 
+const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
-      backgroundColor: '#FFF',
-      flex: 1,
-      justifyContent: 'flex-start',
-      paddingHorizontal: 30,
+    backgroundColor: '#FFF',
+    flex: 1,
+    justifyContent: 'flex-start',
+    paddingHorizontal: 30,
   },
+
   text: {
-     color: '#000000',
-     fontSize: 24,
-     fontStyle: 'normal',
-     fontWeight: '700',
-     textAlign: 'left',
-     paddingTop: 20,   
+    color: '#000000',
+    fontSize: 24,
+    fontStyle: 'normal',
+    fontWeight: '700',
+    textAlign: 'left',
+    paddingTop: 20,   
   },
 
   staticBox: {
@@ -65,6 +72,7 @@ const styles = StyleSheet.create({
     borderColor: '#E2E2E2', 
     marginVertical: 20, 
   },
+
   staticBoxText: {
     color: '#000000', 
     fontSize: 18,
@@ -83,23 +91,23 @@ const styles = StyleSheet.create({
     textAlign: 'left', 
     paddingHorizontal: 20,
     marginTop: 10, // Espacio entre el texto adicional y el cuadro estático
-    
   },
   
   pagerView: {
     flex: 1,
   },
+
   page: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
     marginTop: 20,
-    
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',  
   },
+
   image: {
-    width: 250,
     height: 190,
     borderRadius: 30,
-    
+    width: windowWidth - 150,   
   },
 
   secondStaticbox: {
@@ -121,7 +129,9 @@ const styles = StyleSheet.create({
     marginTop: 90, // Espacio entre el texto y el borde superior del cuadro
   },
 
-
+  arrowContainer: {
+    alignItems: 'center',
+  },
 
 });
 
