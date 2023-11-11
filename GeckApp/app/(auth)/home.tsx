@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'left', 
     paddingHorizontal: 20,
-    marginTop: 10, // Espacio entre el texto adicional y el cuadro estático
+    marginTop: 10, 
   },
   
   pagerView: {
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     borderRadius: 30, 
     borderWidth: 1, 
     borderColor: '#E2E2E2', 
-    marginVertical: 20, // Espacio entre el cuadro y el texto
+    marginVertical: 20, 
   },
 
   secondStaticboxText: {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'left',
     paddingHorizontal: 20,
-    marginTop: 90, // Espacio entre el texto y el borde superior del cuadro
+    marginTop: 90, 
   },
 
   arrowContainer: {
