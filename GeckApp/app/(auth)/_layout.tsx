@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Pressable } from 'react-native';
 import { useAuth } from '@clerk/clerk-expo';
 
+
 export const LogoutButton = () => {
   const { signOut } = useAuth();
 
@@ -42,7 +43,7 @@ const TabsPage = () => {
         redirect={!isSignedIn}
       />
         <Tabs.Screen
-        name="mygecko"
+        name="mygecko" 
         options={{
           headerTitle: 'My Gecko',
           headerTitleStyle: { fontSize: 14 },
