@@ -23,16 +23,6 @@ const Welcome = () => {
                     </TouchableOpacity>
                 </Link>
             </View>
-
-            {/* 
-            
-            <Link href="/register" asChild>
-                <TouchableOpacity>
-                    <Text>Sign Up</Text>
-                </TouchableOpacity>
-            </Link>
-            
-            */}
         </View>
     );
 }
