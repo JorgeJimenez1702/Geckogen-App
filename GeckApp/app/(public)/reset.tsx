@@ -10,7 +10,6 @@ const PwReset = () => {
   const [successfulCreation, setSuccessfulCreation] = useState(false);
   const { signIn, setActive } = useSignIn();
 
-  // Request a passowrd reset code by email
   const onRequestReset = async () => {
     try {
       await signIn!.create({
@@ -23,7 +22,6 @@ const PwReset = () => {
     }
   };
 
-  // Reset the password with the code and the new password
   const onReset = async () => {
     try {
       const result = await signIn!.attemptFirstFactor({
@@ -34,7 +32,6 @@ const PwReset = () => {
       console.log(result);
       alert('Password reset successfully');
 
-      // Set the user session active, which will log in the user automatically
       await setActive!({ session: result.createdSessionId });
     } catch (err: any) {
       alert(err.errors[0].message);
