@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import TerrariumComponent from '../(TerrariumFunctions)/TerrariumComponent';
@@ -19,7 +19,7 @@ const terrarium = () => {
   useEffect(() => {
     const getTerrariums = async () => {
       try {
-        const response = await fetch('https://e688-187-137-2-145.ngrok-free.app/geckogen-a0538/us-central1/app/api/terrariums');
+        const response = await fetch('https://06ac-187-137-2-145.ngrok-free.app/geckogen-a0538/us-central1/app/api/terrariums');
         if (response.ok) {
           const result = await response.json();
           setTerrariums(result);
@@ -35,7 +35,7 @@ const terrarium = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
 
       {terrariums && !isLoading ? (
 
@@ -51,14 +51,13 @@ const terrarium = () => {
         <Spinner visible={isLoading} />
       )}
 
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
     paddingHorizontal: 30,
     backgroundColor: '#F8F8F8',
   },
