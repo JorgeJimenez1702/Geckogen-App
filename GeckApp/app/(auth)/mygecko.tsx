@@ -1,21 +1,25 @@
+// MyGecko.js
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from 'expo-router';
 
-const Mygecko = () => {
-  const navigation = useNavigation<any>();
+const MyGecko = () => {
+  const navigation = useNavigation();
 
-  const handleAddButtonPress = () => {
-    navigation.navigate('geckoForm');
+  const navigateToFormScreen = () => {
+    navigation.navigate({
+      routeName: 'geckoForm',
+    });
   };
 
   return (
     <View>
-      <Button title="Add Item" onPress={handleAddButtonPress} />
+      <Pressable onPress={navigateToFormScreen}>
+        <Ionicons name="add-circle-outline" size={28} color="#0076E4" />
+      </Pressable>
     </View>
   );
 };
 
-export default Mygecko;
-
-
+export default MyGecko;
