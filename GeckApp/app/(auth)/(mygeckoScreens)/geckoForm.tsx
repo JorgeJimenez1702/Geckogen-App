@@ -1,160 +1,273 @@
-import { Button, TextInput, View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Alert, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Picker} from '@react-native-picker/picker';
-import { useState } from 'react';
+import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
+import { format } from 'date-fns';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const initialFormData = {
+  name: '',
+  specimen: '',
+  weight: '',
+  sex: '',
+};
 
 const GeckoForm = () => {
-  
-
-  const [Name, setName] = useState('');
-  const [Specimen, setSpecimen] = useState('');
-  const [Weight, setWeight] = useState('');
-  const [Sex, setSex] = useState('');
+  // Estado del formulario
+  const [name, setName] = useState('');
+  const [specimen, setSpecimen] = useState('');
+  const [weight, setWeight] = useState('');
+  const [sex, setSex] = useState('');
   const [isFormFilled, setIsFormFilled] = useState(false);
 
+  // Estado del selector de fecha
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isDateSelected, setIsDateSelected] = useState(false);
 
+  // Cargar datos almacenados en AsyncStorage al iniciar
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const storedData = await AsyncStorage.getItem('geckoFormData');
+        if (storedData) {
+          const parsedData = JSON.parse(storedData);
+          setName(parsedData.name);
+          setSpecimen(parsedData.specimen);
+          setWeight(parsedData.weight);
+          setSex(parsedData.sex);
+          setSelectedDate(new Date(parsedData.selectedDate));
+          setIsDateSelected(true);
+        }
+      } catch (error) {
+        console.error('Error loading data from AsyncStorage:', error);
+      }
+    };
 
+    loadData();
+  }, []); // El array vacío significa que este efecto se ejecutará solo al montar el componente
 
-  const showDatepicker = () => {
+  // Guardar datos en AsyncStorage cuando el formulario cambia
+  useEffect(() => {
+    const saveData = async () => {
+      try {
+        const formData = {
+          name,
+          specimen,
+          weight,
+          sex,
+          selectedDate,
+        };
+        await AsyncStorage.setItem('geckoFormData', JSON.stringify(formData));
+      } catch (error) {
+        console.error('Error saving data to AsyncStorage:', error);
+      }
+    };
+
+    saveData();
+  }, [name, specimen, weight, sex, selectedDate]); // Este efecto se ejecutará cada vez que estos valores cambien
+
+  // Verificar si el formulario está lleno
+  useEffect(() => {
+    const isFilled =
+      name.trim() !== '' &&
+      specimen.trim() !== '' &&
+      isDateSelected &&
+      selectedDate !== null &&
+      weight.trim() !== '' &&
+      sex !== '';
+
+    setIsFormFilled(isFilled);
+  }, [name, specimen, isDateSelected, selectedDate, weight, sex]);
+
+  // Mostrar el selector de fecha
+  const showDatePickerModal = () => {
+    setIsDateSelected(true);
     setShowDatePicker(true);
   };
 
-  const handleInputChange = (value: string, field: string) => {
-    switch (field) {
-      case 'Name':
-        setName(value);
-        break;
-      case 'Specimen':
-        setSpecimen(value);
-        break;
-      case 'Weight':
-        setWeight(value);
-        break;
-      // Handle other fields as needed
-      default:
-        break;
-    }
-  
-    // Verifica si todos los campos están llenos
-    const isFilled =
-      Name !== '' && Specimen !== '' && selectedDate !== null && Weight !== '' && Sex !== '';
-    setIsFormFilled(isFilled);
-  };
-
-
-  const onDateChange = (event: any, selectedDate: Date | undefined) => {
+  // Manejar el cambio de fecha
+  const handleDateChange = (event: any, selectedDate: Date | undefined) => {
     setShowDatePicker(false);
 
     if (selectedDate) {
       setSelectedDate(selectedDate);
-      // Aquí puedes manejar la fecha seleccionada, como guardarla en el estado de tu formulario.
     }
   };
 
-  const handleSave = () => {
+  // Manejar cambios en los campos del formulario
+  const handleFieldChange = (value: string, field: string) => {
+    switch (field) {
+      case 'name':
+        setName(value);
+        break;
+      case 'specimen':
+        setSpecimen(value);
+        break;
+      case 'weight':
+        const weightRegex = /^(\d+)(g?)$/;
+        const match = value.match(weightRegex);
+
+        if (match) {
+          const numericValue = parseInt(match[1], 10);
+
+          if (numericValue >= 1 && numericValue <= 1000) {
+            setWeight(value);
+          } else {
+            Alert.alert('Error', 'Weight should be in the range of 1g to 1000g.');
+          }
+        } else {
+          Alert.alert('Error', 'Enter a valid weight format (e.g., 100g).');
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Manejar cambios en el selector de sexo
+  const handleSexChange = (itemValue: string) => {
+    setSex(itemValue);
+  };
+
+  // Función para restablecer el formulario
+  const resetForm = () => {
+    setName('');
+    setSpecimen('');
+    setWeight('');
+    setSex('');
+    setSelectedDate(new Date());
+    setIsDateSelected(false);
+    setIsFormFilled(false);
+  };
+
+  // Guardar los datos del gecko
+  const handleSaveGeckoData = () => {
     if (isFormFilled) {
       // Lógica para guardar los datos
+      // Resetear el formulario después de guardar
+      resetForm();
       Alert.alert('Success', 'Gecko data saved successfully.');
     } else {
       Alert.alert('Error', 'Please fill in all fields.');
     }
   };
 
+  // Renderizar el formulario
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text style={styles.text}>Name</Text>
-        <TextInput
-          autoCapitalize="none"
-          placeholder="Enter your gecko's name"
-          placeholderTextColor="#D0D0D0"
-          value={Name}
-          onChangeText={setName}
-          style={styles.inputField}
-        />
-        <Text style={styles.text}>Specimen</Text>
-        <TextInput
-          autoCapitalize="none"
-          placeholder="Enter your gecko's specimen"
-          placeholderTextColor="#D0D0D0"
-          value={Specimen}
-          onChangeText={setSpecimen}
-          style={styles.inputField}
-        />
-      </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Comportamiento de ajuste del teclado
+      style={{ flex: 1 }}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>Name</Text>
+            <TextInput
+              autoCapitalize="none"
+              placeholder="Enter your gecko's name"
+              placeholderTextColor="#D0D0D0"
+              value={name}
+              onChangeText={(value) => {
+                handleFieldChange(value, 'name');
+              }}
+              style={styles.inputField}
+            />
+            <Text style={styles.text}>Specimen</Text>
+            <TextInput
+              autoCapitalize="none"
+              placeholder="Enter your gecko's specimen"
+              placeholderTextColor="#D0D0D0"
+              value={specimen}
+              onChangeText={(value) => {
+                handleFieldChange(value, 'specimen');
+              }}
+              style={styles.inputField}
+            />
+          </View>
 
-      <View style={styles.inputFieldContainer}>
-        <Text style={styles.text}>Hatch date</Text>
-        <View style={styles.dateInputContainer}>
-          <TextInput
-            value={selectedDate.toISOString().split('T')[0]}
-            placeholder="Enter gecko's hatch date"
-            style={styles.inputFieldWithIcon}
-            editable={false} // Para que no sea editable directamente
-          />
-          <TouchableOpacity style={styles.datePickerButton} onPress={showDatepicker}>
-            <Ionicons name="calendar-outline" size={24} color="gray" />
-          </TouchableOpacity>
-        </View>
-      </View>
+          <View style={styles.inputFieldContainer}>
+            <Text style={styles.text}>Hatch date</Text>
+            <View style={styles.dateInputContainer}>
+              <TextInput
+                value={isDateSelected ? format(selectedDate, 'yyyy-MM-dd') : ''}
+                placeholder={isDateSelected ? '' : "Enter gecko's hatch date"}
+                style={[
+                  styles.inputFieldWithIcon,
+                  isDateSelected && styles.selectedDateText,
+                ]}
+                editable={false}
+              />
+              <TouchableOpacity
+                style={styles.datePickerButton}
+                onPress={showDatePickerModal}
+              >
+                <Ionicons name="calendar-outline" size={24} color="gray" />
+              </TouchableOpacity>
+            </View>
+          </View>
 
-      {showDatePicker && (
-        <DateTimePicker
-          value={selectedDate}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={onDateChange}
-        />
-      )}
-
-        <Text style={styles.text}>Weight in grams</Text>
-        <TextInput
-          autoCapitalize="none"
-          placeholder="Enter gecko's weight"
-          placeholderTextColor="#D0D0D0"
-          value={Weight}
-          onChangeText={setWeight}
-          style={styles.inputField}
-        />
-
-      <View style={styles.pickerContainer}>
-        <Text style={styles.text}>Sexing</Text>
-        <View style={styles.pickerWithText}>
-          {Sex === '' && (
-            <Text style={styles.placeholderText}>Enter your gecko's sexing</Text>
+          {showDatePicker && (
+            <DateTimePicker
+              value={selectedDate}
+              mode="date"
+              is24Hour={true}
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              onChange={handleDateChange}
+            />
           )}
-          <Picker
-            selectedValue={Sex}
-            onValueChange={(itemValue) => setSex(itemValue)}
-            mode="dialog"
-            style={styles.pickerStyle}
-          >
-            <Picker.Item label="" value="" />
-            <Picker.Item label="Female" value="female" />
-            <Picker.Item label="Male" value="male" />
-          </Picker>
+
+          <Text style={styles.text}>Weight in grams</Text>
+          <TextInput
+            autoCapitalize="none"
+            placeholder="Enter gecko's weight"
+            placeholderTextColor="#D0D0D0"
+            value={weight}
+            onChangeText={(value) => {
+              handleFieldChange(value, 'weight');
+            }}
+            style={styles.inputField}
+          />
+
+          <View style={styles.pickerContainer}>
+            <Text style={styles.text}>Sexing</Text>
+            <View style={styles.pickerWithText}>
+              <Picker
+                selectedValue={sex}
+                onValueChange={(itemValue) => {
+                  handleSexChange(itemValue);
+                }}
+                mode="dropdown"
+                style={styles.pickerStyle}
+              >
+                <Picker.Item label="" value="" />
+                <Picker.Item label="Female" value="female" />
+                <Picker.Item label="Male" value="male" />
+              </Picker>
+              {sex === '' && (
+                <Text style={styles.placeholderText}>
+                  Enter your gecko's sexing
+                </Text>
+              )}
+            </View>
+          </View>
+
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={{
+                ...styles.saveButton,
+                backgroundColor: isFormFilled ? '#2196F3' : '#D0D0D0',
+              }}
+              onPress={handleSaveGeckoData}
+              disabled={!isFormFilled}
+            >
+              <Text style={styles.buttonText}>Add gecko</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-
-      <View style={styles.container}>
-      {/* ... (resto de tu código) */}
-
-      <TouchableOpacity
-        style={{
-          ...styles.saveButton,
-          backgroundColor: isFormFilled ? '#2196F3' : '#D0D0D0',
-        }}
-        onPress={handleSave}
-      >
-        <Text style={styles.buttonText}>Save</Text>
-      </TouchableOpacity>
-    </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -164,6 +277,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     paddingHorizontal: 30,
+  },
+  scrollContainer: {
+  flexGrow: 1,
+  justifyContent: 'flex-start',
   },
   inputContainer: {
     marginTop: 50,
@@ -195,7 +312,7 @@ const styles = StyleSheet.create({
   },
   datePickerButton: {
     position: 'absolute',
-    top: 15, 
+    top: 15,
     right: 15,
   },
   dateInputContainer: {
@@ -211,9 +328,8 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginBottom: -10,
   },
-
   pickerContainer: {
-    marginTop: 5, 
+    marginTop: 5,
   },
   pickerWithText: {
     flexDirection: 'row',
@@ -224,40 +340,43 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
     overflow: 'hidden',
-    marginTop: 10, 
+    marginTop: 2,
   },
   pickerStyle: {
     flex: 1,
     height: 50,
-    backgroundColor: 'transparent', // Hacer el fondo transparente
+    backgroundColor: 'transparent',
     borderWidth: 0,
-    marginRight: 10, // Ajuste para la separación del icono
+    marginRight: 5,
   },
   placeholderText: {
     color: '#D0D0D0',
-    flex: 1, // Para ocupar el espacio restante
-    marginLeft: 15, // Ajuste para la separación del texto
+    flex: 1,
+    marginLeft: 15,
     position: 'absolute',
     left: 0,
     right: 0,
     top: 15,
-    zIndex: 1, // Para que esté encima del Picker
+    zIndex: 1,
   },
-
   saveButton: {
-    width: 300,
-    marginTop: 50,
+    width: 350,
+    marginTop: 80,
     borderRadius: 10,
     height: 50,
+    marginLeft: -30,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
     color: '#FFF',
     fontSize: 18,
+    textAlign: 'center',
   },
-
-
+  selectedDateText: {
+    color: '#000',
+  },
 });
 
 export default GeckoForm;
+
