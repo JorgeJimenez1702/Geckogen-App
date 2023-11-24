@@ -77,7 +77,7 @@ const TabsPage = () => {
         redirect={!isSignedIn}
       />
       <Tabs.Screen
-        name="profile"
+        name="account"
         options={{
           headerTitle: 'Account',
           headerTitleStyle: { fontSize: 16, color: '#000', fontStyle: 'normal', fontWeight: '400', lineHeight: 25, letterSpacing: -0.4 },

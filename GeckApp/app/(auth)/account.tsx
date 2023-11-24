@@ -2,7 +2,7 @@ import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { useUser } from '@clerk/clerk-expo';
 
-const Profile = () => {
+const Account = () => {
   const { user } = useUser();
   const [firstName, setFirstName] = useState(user?.firstName);
   const [lastName, setLastName] = useState(user?.lastName);
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default Account;
