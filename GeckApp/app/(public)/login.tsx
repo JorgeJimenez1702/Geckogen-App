@@ -51,10 +51,10 @@ const Login = () => {
                 <TextInput placeholder="Enter your password" placeholderTextColor={'#D0D0D0'} value={password} onChangeText={setPassword} secureTextEntry style={styles.inputField} />
 
 
-                <Link href="/reset" asChild>
-                    <Pressable style={styles.secondarybuttons}>
+                <Link href="/(public)/reset" asChild>
+                    <TouchableOpacity style={styles.secondarybuttons}>
                         <Text>Forgot password?</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </Link>
 
 
@@ -68,9 +68,9 @@ const Login = () => {
                 </TouchableOpacity>
 
                 <Link href="/register" asChild>
-                    <Pressable style={styles.secondarybuttons}>
+                    <TouchableOpacity style={styles.secondarybuttons}>
                         <Text>Don't have an account? <Text style={styles.registerLetters}>Sign Up</Text></Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </Link>
             </View>
 

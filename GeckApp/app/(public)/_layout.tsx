@@ -18,9 +18,9 @@ const PublicLayout = () => {
         name="initialpage"
         options={{
           headerTitle:'',
-          headerTintColor: '#000000',
+          headerTintColor: '#0076E4',
           headerLargeStyle: {backgroundColor: '#FFF'},
-          presentation: 'modal',
+          headerBackVisible: false,
         }}></Stack.Screen>
       <Stack.Screen
         name="login"
@@ -28,7 +28,6 @@ const PublicLayout = () => {
           headerTitle: 'Log In',
           headerTintColor: '#000000',
           headerLargeStyle: {backgroundColor: '#FFF'},
-          presentation: 'containedModal',
         }}></Stack.Screen>
       <Stack.Screen
         name="register"
@@ -36,7 +35,6 @@ const PublicLayout = () => {
           headerTitle: 'Sign Up',
           headerTintColor: '#000000',
           headerLargeStyle: {backgroundColor: '#FFF'},
-          presentation: 'containedModal',
         }}></Stack.Screen>
       <Stack.Screen
         name="reset"
@@ -44,7 +42,7 @@ const PublicLayout = () => {
           headerTitle: 'Reset Password',
           headerTintColor: '#000000',
           headerLargeStyle: {backgroundColor: '#FFF'},
-          presentation: 'modal',
+          headerBackTitleVisible: false,
         }}></Stack.Screen>
     </Stack>
   );

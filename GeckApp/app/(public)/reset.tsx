@@ -40,7 +40,6 @@ const PwReset = () => {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerBackVisible: !successfulCreation }} />
 
       {!successfulCreation && (
         <>
