@@ -100,29 +100,33 @@ const GeckoForm = () => {
   const handleFieldChange = (value: string, field: string) => {
     switch (field) {
       case 'name':
-        setName(value);
+        if (value.length <= 50) {
+          setName(value);
+        } else {
+          Alert.alert('Error', 'Name should not exceed 50 characters.');
+        }
         break;
       case 'specimen':
-        setSpecimen(value);
+        if (value.length <= 50) {
+          setSpecimen(value);
+        } else {
+          Alert.alert('Error', 'Specimen should not exceed 50 characters.');
+        }
         break;
-      case 'weight':
-        const weightRegex = /^(\d+)(g?)$/;
-        const match = value.match(weightRegex);
-
-        if (match) {
-          const numericValue = parseInt(match[1], 10);
-
-          if (numericValue >= 1 && numericValue <= 1000) {
+        case 'weight':
+          const weightRegex = /^(\d+)(g?)$/;
+          const match = value.match(weightRegex);
+    
+          if (value === '') {
+            // Si el campo está vacío, borra el valor
+            setWeight(value);
+          } else if (match && Number(match[1]) <= 1000) {
+            // Si el valor sigue siendo válido, establece el nuevo valor
             setWeight(value);
           } else {
             Alert.alert('Error', 'Weight should be in the range of 1g to 1000g.');
           }
-        } else {
-          Alert.alert('Error', 'Enter a valid weight format (e.g., 100g).');
-        }
-        break;
-      default:
-        break;
+          break;
     }
   };
 
