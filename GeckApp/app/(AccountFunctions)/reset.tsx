@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Stack } from 'expo-router';
 import { useSignIn } from '@clerk/clerk-expo';
 
-const PwReset = () => {
+const Reset = () => {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
@@ -95,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PwReset;
+export default Reset;

@@ -1,33 +1,77 @@
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
-import { useState } from 'react';
-import { useUser } from '@clerk/clerk-expo';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
+import { useAuth } from '@clerk/clerk-expo';
+import { Pressable } from 'react-native';
 
 const Account = () => {
-  const { user } = useUser();
-  const [firstName, setFirstName] = useState(user?.firstName);
-  const [lastName, setLastName] = useState(user?.lastName);
+  const { signOut } = useAuth();
 
-  const onSaveUser = async () => {
-    try {
-      const result = await user?.update({
-        firstName: firstName!,
-        lastName: lastName!,
-      });
-      console.log(result);
-    } catch (e) {
-      console.log('~ file: profile.tsx:18 ~ onSaveUser ~ e', JSON.stringify(e));
-    }
+  const doLogout = () => {
+    signOut();
   };
 
   return (
     <View style={styles.container}>
-      <Text style={{ textAlign: 'center' }}>
-        Good morning {user?.firstName} {user?.lastName}!
-      </Text>
+      <Text style={styles.settings}>Settings</Text>
 
-      <TextInput placeholder="First Name" value={firstName || ''} onChangeText={setFirstName} style={styles.inputField} />
-      <TextInput placeholder="Last Name" value={lastName || ''} onChangeText={setLastName} style={styles.inputField} />
-      <Button onPress={onSaveUser} title="Update account" color={'#6c47ff'}></Button>
+      <Link href={'/(AccountFunctions)/profileEdit'} asChild>
+        <TouchableOpacity style={styles.button}>
+          <View style={styles.buttonContainer}>
+            <Ionicons name="person-circle-outline" size={24} color={'#000'} />
+            <Text style={styles.buttonText}>Personal information</Text>
+            <Ionicons name="chevron-forward" size={24} color={'#000'} />
+          </View>
+        </TouchableOpacity>
+      </Link>
+
+      <Link href={'/(AccountFunctions)/reset'} asChild>
+        <TouchableOpacity style={styles.button}>
+          <View style={styles.buttonContainer}>
+            <Ionicons name="lock-closed-outline" size={24} color={'#000'} />
+            <Text style={styles.buttonText}>Change Password</Text>
+            <Ionicons name="chevron-forward" size={24} color={'#000'} />
+          </View>
+        </TouchableOpacity>
+      </Link>
+
+      <Text style={styles.general}>General</Text>
+
+      <Link href={'/(AccountFunctions)/conditions'} asChild>
+        <TouchableOpacity style={styles.button}>
+          <View style={styles.buttonContainer}>
+            <Ionicons name="book-outline" size={24} color={'#000'} />
+            <Text style={styles.buttonText}>Terms & Conditions</Text>
+            <Ionicons name="chevron-forward" size={24} color={'#000'} />
+          </View>
+        </TouchableOpacity>
+      </Link>
+
+      <Link href={'/(AccountFunctions)/policy'} asChild>
+        <TouchableOpacity style={styles.button}>
+          <View style={styles.buttonContainer}>
+            <Ionicons name="shield-checkmark-outline" size={24} color={'#000'} />
+            <Text style={styles.buttonText}>Privacy Policy</Text>
+            <Ionicons name="chevron-forward" size={24} color={'#000'} />
+          </View>
+        </TouchableOpacity>
+      </Link>
+
+      <TouchableOpacity style={styles.button}>
+        <View style={styles.buttonContainer}>
+          <Ionicons name="information-circle-outline" size={24} color={'#000'} />
+          <Text style={styles.buttonText}>Help</Text>
+          <Ionicons name="chevron-forward" size={24} color={'#000'} />
+        </View>
+      </TouchableOpacity>
+
+
+      <TouchableOpacity onPress={doLogout}>
+        <View style={styles.logOutContainer}>
+          <Ionicons name="log-out-outline" size={24} color={'#000'} />
+          <Text style={styles.logOut}>LOG OUT</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -35,18 +79,63 @@ const Account = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'flex-start',
+    padding: 30,
+    backgroundColor: '#F8F8F8',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  logOutContainer: {
+    marginTop: 200,
+    flexDirection: 'row',
     justifyContent: 'center',
-    padding: 40,
+    alignItems: 'center',
   },
-  inputField: {
-    marginVertical: 4,
-    height: 50,
+  settings: {
+    width: 72,
+    height: 28,
+    flexShrink: 0,
+    color: '#000',
+    fontSize: 17,
+    fontWeight: '700',
+    lineHeight: 24,
+    marginBottom: 20,
+  },
+  general: {
+    width: 328,
+    height: 28,
+    flexShrink: 0,
+    color: '#000',
+    fontSize: 17,
+    fontWeight: '700',
+    lineHeight: 24,
+    marginBottom: 15,
+  },
+  button: {
     borderWidth: 1,
-    borderColor: '#6c47ff',
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: '#fff',
+    borderColor: '#D0D0D0',
+    height: 50,
+    borderRadius: 15,
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 15,
   },
+  buttonText: {
+    color: '#000',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 5,
+  },
+  logOut: {
+    color: '#0076E4',
+    fontSize: 17,
+    fontWeight: '700',
+    lineHeight: 24,
+  }
 });
 
 export default Account;

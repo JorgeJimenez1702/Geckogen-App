@@ -82,9 +82,8 @@ const TabsPage = () => {
           headerTitle: 'Account',
           headerTitleStyle: { fontSize: 16, color: '#000', fontStyle: 'normal', fontWeight: '400', lineHeight: 25, letterSpacing: -0.4 },
           headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <Ionicons name="ellipse-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="person-circle" size={size} color={color} />,
           tabBarLabel: 'Account',
-          headerRight: () => <LogoutButton />,
         }}
         redirect={!isSignedIn}
       />
