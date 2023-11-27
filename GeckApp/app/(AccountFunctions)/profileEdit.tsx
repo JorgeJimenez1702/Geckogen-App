@@ -12,19 +12,51 @@ interface userInfoType {
     city: string,
     zipcode: string,
     address: string
-  }
+}
 
 const Account = () => {
     const { user } = useUser();
+    const [userInfo, setUserInfo] = useState<userInfoType>();
+    
     const [firstName, setFirstName] = useState(user?.firstName as string);
     const [lastName, setLastName] = useState(user?.lastName as string);
     const [emailAddress, setEmailAddress] = useState(user?.primaryEmailAddress?.emailAddress as string);
+    
+    
     const [phoneNumber, setPhoneNumber] = useState('');
     const [country, setCountry] = useState('');
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [address, setAddress] = useState('');
+    
+    useEffect(() => {
+        const getUserInfo = async () => {
+            try {
+                const response = await fetch(`https://api-jtnmag5rtq-uc.a.run.app/api/users/${user?.id}`);
+
+                if (response.ok) {
+                    const result = await response.json();
+                    setUserInfo(result);
+                    //console.log(userInfo);
+                } else {
+                    console.error('Failed to fetch terrariums');
+                }
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            }
+        }
+        getUserInfo();
+    }, []);
+
+    useEffect(() => {
+        setPhoneNumber(userInfo?.phoneNumber as string);
+        setCountry(userInfo?.country as string);
+        setState(userInfo?.state as string);
+        setCity(userInfo?.city as string);
+        setZipcode(userInfo?.zipcode as string);
+        setAddress(userInfo?.address as string);
+    }, [userInfo]);
 
     const putUser = async (userInfo: userInfoType) => {
         try {
@@ -47,7 +79,7 @@ const Account = () => {
                     'Update', 'User has been updated successfully',
                     [{
                         text: 'OK',
-                        onPress: () => console.log(' '),
+                        onPress: () => console.log(''),
                     },]
                 )
             } else {
@@ -57,6 +89,7 @@ const Account = () => {
             console.error('Error fetching users:', error);
         }
     };
+
 
 
     return (
@@ -71,22 +104,22 @@ const Account = () => {
             <TextInput placeholder="Email" editable={false} value={emailAddress || ''} style={styles.inputField} />
 
             <Text>Phone Number</Text>
-            <TextInput placeholder="Enter your phone number" placeholderTextColor={'#D0D0D0'} value={phoneNumber || ''} onChangeText={setPhoneNumber} style={styles.inputField} />
+            <TextInput placeholder="Enter your phone number" placeholderTextColor={'#000'} value={phoneNumber || ''} onChangeText={setPhoneNumber} style={styles.inputField} />
 
             <Text>Country</Text>
-            <TextInput placeholder="Select your country address" placeholderTextColor={'#D0D0D0'} value={country} onChangeText={setCountry} style={styles.inputField} />
+            <TextInput placeholder="Select your country address" placeholderTextColor={'#000'} value={country || ''} onChangeText={setCountry} style={styles.inputField} />
 
             <Text>State</Text>
-            <TextInput placeholder="Select your state address" placeholderTextColor={'#D0D0D0'} value={state} onChangeText={setState} style={styles.inputField} />
+            <TextInput placeholder="Select your state address" placeholderTextColor={'#000'} value={state || ''} onChangeText={setState} style={styles.inputField} />
 
             <Text>City</Text>
-            <TextInput placeholder="Enter your city address" placeholderTextColor={'#D0D0D0'} value={city} onChangeText={setCity} style={styles.inputField} />
+            <TextInput placeholder="Enter your city address" placeholderTextColor={'#000'} value={city || ''} onChangeText={setCity} style={styles.inputField} />
 
             <Text>Zip code</Text>
-            <TextInput placeholder="Enter your zip code" placeholderTextColor={'#D0D0D0'} value={zipcode} onChangeText={setZipcode} style={styles.inputField} />
+            <TextInput placeholder="Enter your zip code" placeholderTextColor={'#000'} value={zipcode || ''} onChangeText={setZipcode} style={styles.inputField} />
 
             <Text>Address</Text>
-            <TextInput placeholder="Enter your city address" placeholderTextColor={'#D0D0D0'} value={address} onChangeText={setAddress} style={styles.inputField} />
+            <TextInput placeholder="Enter your city address" placeholderTextColor={'#000'} value={address || ''} onChangeText={setAddress} style={styles.inputField} />
 
             <TouchableOpacity onPress={() => putUser({
                 firstName,
