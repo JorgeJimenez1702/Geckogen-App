@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, Pressable, StyleSheet, Text, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
-import Spinner from "react-native-loading-spinner-overlay";
+import { Link } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
-import MyGeckoComponent from "../(MyGeckoScreens)/myGeckoComponent";
+import MyGeckoComponent from "../(mygeckoScreens)/myGeckoComponent";
+import AddGecko from "../(mygeckoScreens)/addGecko";
 
 interface geckosInterface {
+  userId: string,
   name: string;
   specimen: string;
   weight: string;
@@ -70,13 +77,6 @@ const MyGecko = () => {
           </View>
         )}
       </View>
-      <View>
-        <Link href={"/(MyGeckoScreens)/addGecko"} asChild>
-          <Pressable style={{ marginRight: 15 }}>
-            <Ionicons name="add-circle-outline" size={28} color={"#0076E4"} />
-          </Pressable>
-        </Link>
-      </View>
     </ScrollView>
   );
 };
@@ -84,8 +84,7 @@ const MyGecko = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
-    contentContainerStyle: "flex-end",
+    contentContainerStyle: "center",
     padding: 10,
     backgroundColor: "#fff",
   },

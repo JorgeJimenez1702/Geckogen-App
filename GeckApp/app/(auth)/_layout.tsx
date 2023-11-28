@@ -1,6 +1,6 @@
 import { Link, Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable, View, Text } from "react-native";
+import { TouchableOpacity, View, Text, Pressable } from "react-native";
 import { useAuth } from "@clerk/clerk-expo";
 
 export const LogoutButton = () => {
@@ -20,7 +20,11 @@ export const LogoutButton = () => {
 export const AddButton = () => {
   return (
     <View>
-      <Text> </Text>
+      <Link href={"/(mygeckoScreens)/geckoForm"} asChild>
+        <TouchableOpacity style={{ marginLeft: 50 }}>
+          <Ionicons name="add-circle-outline" size={28} color={"#0076E4"} />
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 };
@@ -74,7 +78,7 @@ const TabsPage = () => {
             <Ionicons name="ellipse-outline" size={size} color={color} />
           ),
           tabBarLabel: "My Gecko",
-          headerRight: () => <AddButton/>,
+          headerRight: () => <AddButton />,
         }}
         redirect={!isSignedIn}
       />

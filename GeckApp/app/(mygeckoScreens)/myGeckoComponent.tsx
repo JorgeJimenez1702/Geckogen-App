@@ -3,6 +3,7 @@ import { Link } from 'expo-router';
 
 
 const MyGeckoComponent = (object: {geckosInterface: {
+  userId: string,
   name: string;
   specimen: string;
   weight: string;
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
         marginTop: 26,
         marginLeft: 26,
         width: 125,
-        height: 21,
+        height: 40,
         color: '#000',
         fontSize: 22,
         fontStyle: 'normal',

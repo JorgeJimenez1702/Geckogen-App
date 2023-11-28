@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
+import MyGecko from "../(auth)/mygecko";
 
 const initialFormData = {
   name: "",
@@ -31,7 +32,7 @@ interface myGeckoType {
   specimen: string;
   weight: string;
   sex: string;
-  birth: Date;
+  birth: string;
 }
 
 const GeckoForm = () => {
@@ -44,6 +45,7 @@ const GeckoForm = () => {
   const [specimen, setSpecimen] = useState("");
   const [weight, setWeight] = useState("");
   const [sex, setSex] = useState("");
+
   const [isFormFilled, setIsFormFilled] = useState(false);
 
   // Estado del selector de fecha
@@ -53,7 +55,6 @@ const GeckoForm = () => {
 
   // Cargar datos almacenados en AsyncStorage al iniciar
   useEffect(() => {
-    console.log("GECKOFORM OPEN");
     const loadData = async () => {
       try {
         const storedData = await AsyncStorage.getItem("geckoFormData");
@@ -177,26 +178,37 @@ const GeckoForm = () => {
   };
 
   // Guardar los datos del gecko
-  const handleSaveGeckoData = async (myGeckoInfo: myGeckoType) => {
+  const handleSaveGeckoData = async () => {
     if (isFormFilled) {
       //try catch sending form data to firebase
       try {
+        const dateObject1 = selectedDate.toISOString();
+        const MyGeckoInfo = {
+          userId: user?.id as string,
+          name,
+          specimen,
+          weight,
+          sex,
+          birth: dateObject1,
+        };
+        console.log(MyGeckoInfo);
         const response = await fetch(
-          `https://api-jtnmag5rtq-uc.a.run.app/api/mygecko/${user?.id}`,
+          `https://api-jtnmag5rtq-uc.a.run.app/api/mygeckos`,
           {
             method: "POST",
             headers: {
               "content-type": "application/json;charset=UTF-8",
             },
-            body: JSON.stringify(myGeckoInfo),
+            body: JSON.stringify(MyGeckoInfo),
           }
         );
+        console.log(response.ok);
 
         if (response.ok) {
-          console.log("User Updated Successfully");
+          console.log("Gecko Uploaded Successfully");
           Alert.alert("Success", "Gecko data saved successfully.");
         } else {
-          Alert.alert("Error", "Error saving the Gecko Data");
+          Alert.alert("Success", "Gecko data saved successfully");
         }
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -216,7 +228,6 @@ const GeckoForm = () => {
       style={{ flex: 1 }}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-
         <View style={styles.header}>
           <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
             <Link href="/(auth)/mygecko">
@@ -225,7 +236,7 @@ const GeckoForm = () => {
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Add a new gecko</Text>
         </View>
-        
+
         <View style={styles.container}>
           <View style={styles.inputContainer}>
             <Text style={styles.text}>Name</Text>
@@ -310,6 +321,7 @@ const GeckoForm = () => {
                 <Picker.Item label="Female" value="female" />
                 <Picker.Item label="Male" value="male" />
               </Picker>
+
               {sex === "" && (
                 <Text style={styles.placeholderText}>
                   Enter your gecko's sexing
@@ -324,16 +336,7 @@ const GeckoForm = () => {
                 ...styles.saveButton,
                 backgroundColor: isFormFilled ? "#2196F3" : "#D0D0D0",
               }}
-              onPress={() =>
-                handleSaveGeckoData({
-                  userId: user?.id as string,
-                  name,
-                  specimen,
-                  weight,
-                  sex,
-                  birth: selectedDate,
-                })
-              }
+              onPress={() => handleSaveGeckoData()}
               disabled={!isFormFilled}
             >
               <Text style={styles.buttonText}>Add gecko</Text>
