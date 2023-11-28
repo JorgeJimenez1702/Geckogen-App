@@ -44,20 +44,35 @@ const TabsPage = () => {
       <Tabs.Screen
         name="home"
         options={{
-          headerTitle: "Home",
-          headerTitleStyle: {
-            fontSize: 16,
-            color: "#000",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: 25,
-            letterSpacing: -0.4,
-          },
-          headerTitleAlign: "center",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ellipse-outline" size={size} color={color} />
-          ),
-          tabBarLabel: "Home",
+          headerTitle: 'Home',
+          headerTitleStyle: { fontSize: 14 },
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, size }) => <Ionicons name="home-outline" size={size} color={color} />,
+          tabBarLabel: 'Home',
+        }}
+        redirect={!isSignedIn}
+      />
+        <Tabs.Screen
+        name="mygecko"
+        options={{
+          headerTitle: 'My Gecko',
+          headerTitleStyle: { fontSize: 14 },
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, size }) => <Ionicons name="egg-outline" size={size} color={color} />,
+          tabBarLabel: 'My Gecko',
+          headerRight: () => <LogoutButton />,
+        }}
+        redirect={!isSignedIn}
+      />
+         <Tabs.Screen
+        name="terrarium"
+        options={{
+          headerTitle: 'Terrarium',
+          headerTitleStyle: { fontSize: 14 },
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, size }) => <Ionicons name="analytics-outline" size={size} color={color} />,
+          tabBarLabel: 'Terrarium',
+          headerRight: () => <LogoutButton />,
         }}
         redirect={!isSignedIn}
       />
