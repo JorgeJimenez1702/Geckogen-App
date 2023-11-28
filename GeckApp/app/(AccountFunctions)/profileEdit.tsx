@@ -1,65 +1,137 @@
-import { ScrollView, Text, Button, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
+import { ScrollView, Text, Button, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-expo';
+
+interface userInfoType {
+    firstName: string,
+    lastName: string,
+    emailAddress: string,
+    phoneNumber: string,
+    country: string,
+    state: string,
+    city: string,
+    zipcode: string,
+    address: string
+}
 
 const Account = () => {
     const { user } = useUser();
-    const [firstName, setFirstName] = useState(user?.firstName);
-    const [lastName, setLastName] = useState(user?.lastName);
-    const [emailAddress, setEmailAddress] = useState(user?.primaryEmailAddress);
-    const [phoneNumber, setPhoneNumber] = useState(user?.primaryPhoneNumber);
+    const [userInfo, setUserInfo] = useState<userInfoType>();
+    
+    const [firstName, setFirstName] = useState(user?.firstName as string);
+    const [lastName, setLastName] = useState(user?.lastName as string);
+    const [emailAddress, setEmailAddress] = useState(user?.primaryEmailAddress?.emailAddress as string);
+    
+    
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [country, setCountry] = useState('');
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [address, setAddress] = useState('');
     
-    const [primaryEmailAddress, setPrimaryEmailAddress] = useState('');
-    const [primaryPhoneNumber, setPrimaryPhoneNumber] = useState('');
+    useEffect(() => {
+        const getUserInfo = async () => {
+            try {
+                const response = await fetch(`https://api-jtnmag5rtq-uc.a.run.app/api/users/${user?.id}`);
 
-    const onSaveUser = async () => {
+                if (response.ok) {
+                    const result = await response.json();
+                    setUserInfo(result);
+                    //console.log(userInfo);
+                } else {
+                    console.error('Failed to fetch terrariums');
+                }
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            }
+        }
+        getUserInfo();
+    }, []);
+
+    useEffect(() => {
+        setPhoneNumber(userInfo?.phoneNumber as string);
+        setCountry(userInfo?.country as string);
+        setState(userInfo?.state as string);
+        setCity(userInfo?.city as string);
+        setZipcode(userInfo?.zipcode as string);
+        setAddress(userInfo?.address as string);
+    }, [userInfo]);
+
+    const putUser = async (userInfo: userInfoType) => {
         try {
+            const response = await fetch(`https://api-jtnmag5rtq-uc.a.run.app/api/users/${user?.id}`, {
+                method: "PUT",
+                headers: {
+                    'content-type': 'application/json;charset=UTF-8'
+                },
+                body: JSON.stringify(userInfo)
+            });
+
             const result = await user?.update({
                 firstName: firstName!,
                 lastName: lastName!,
             });
 
-            console.log(result);
-        } catch (e) {
-            console.log('~ file: profile.tsx:18 ~ onSaveUser ~ e', JSON.stringify(e));
+            if (response.ok) {
+                console.log('User Updated Successfully');
+                Alert.alert(
+                    'Update', 'User has been updated successfully',
+                    [{
+                        text: 'OK',
+                        onPress: () => console.log(''),
+                    },]
+                )
+            } else {
+                console.error('Failed to fetch users');
+            }
+        } catch (error) {
+            console.error('Error fetching users:', error);
         }
     };
+
+
 
     return (
         <ScrollView style={styles.container}>
             <Text>Name</Text>
             <TextInput placeholder="First Name" value={firstName || ''} onChangeText={setFirstName} style={styles.inputField} />
-            
+
             <Text>Last Name</Text>
             <TextInput placeholder="Last Name" value={lastName || ''} onChangeText={setLastName} style={styles.inputField} />
-            
+
             <Text>Email</Text>
-            <TextInput placeholder="Email" value={emailAddress?.emailAddress || ''} onChangeText={setPrimaryEmailAddress} style={styles.inputField} />
-            
+            <TextInput placeholder="Email" editable={false} value={emailAddress || ''} style={styles.inputField} />
+
             <Text>Phone Number</Text>
-            <TextInput placeholder="Enter your phone number" placeholderTextColor={'#D0D0D0'} value={phoneNumber?.phoneNumber || ''} onChangeText={setPrimaryPhoneNumber} style={styles.inputField} />
-            
+            <TextInput placeholder="Enter your phone number" placeholderTextColor={'#000'} value={phoneNumber || ''} onChangeText={setPhoneNumber} style={styles.inputField} />
+
             <Text>Country</Text>
-            <TextInput placeholder="Select your country address" placeholderTextColor={'#D0D0D0'} value={country} onChangeText={setCountry} style={styles.inputField} />
+            <TextInput placeholder="Select your country address" placeholderTextColor={'#000'} value={country || ''} onChangeText={setCountry} style={styles.inputField} />
 
             <Text>State</Text>
-            <TextInput placeholder="Select your state address" placeholderTextColor={'#D0D0D0'} value={state} onChangeText={setState} style={styles.inputField} />
+            <TextInput placeholder="Select your state address" placeholderTextColor={'#000'} value={state || ''} onChangeText={setState} style={styles.inputField} />
 
             <Text>City</Text>
-            <TextInput placeholder="Enter your city address" placeholderTextColor={'#D0D0D0'} value={city} onChangeText={setCity} style={styles.inputField} />
+            <TextInput placeholder="Enter your city address" placeholderTextColor={'#000'} value={city || ''} onChangeText={setCity} style={styles.inputField} />
 
             <Text>Zip code</Text>
-            <TextInput placeholder="Enter your zip code" placeholderTextColor={'#D0D0D0'} value={zipcode} onChangeText={setZipcode} style={styles.inputField} />
+            <TextInput placeholder="Enter your zip code" placeholderTextColor={'#000'} value={zipcode || ''} onChangeText={setZipcode} style={styles.inputField} />
 
             <Text>Address</Text>
-            <TextInput placeholder="Enter your city address" placeholderTextColor={'#D0D0D0'} value={address} onChangeText={setAddress} style={styles.inputField} />
-            
-            <TouchableOpacity onPress={onSaveUser} style={styles.button}>
+            <TextInput placeholder="Enter your city address" placeholderTextColor={'#000'} value={address || ''} onChangeText={setAddress} style={styles.inputField} />
+
+            <TouchableOpacity onPress={() => putUser({
+                firstName,
+                lastName,
+                emailAddress,
+                phoneNumber,
+                country,
+                state,
+                city,
+                zipcode,
+                address
+            })} style={styles.button}>
                 <Text style={styles.buttonText}>
                     Confirm
                 </Text>

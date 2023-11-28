@@ -44,7 +44,8 @@ const Reset = () => {
 
       {!successfulCreation && (
         <>
-          <Text style={{fontSize: 17, fontWeight: '700', marginBottom: 15, }}>Email: </Text>
+          <Text style={{ fontSize: 14, fontWeight: '400', marginBottom: 200, }}>We're going to send you a code to your email address, this code will let you change your password to a new one</Text>
+          <Text style={{ fontSize: 17, fontWeight: '700', marginBottom: 15, }}>Please insert your Email: </Text>
           <TextInput autoCapitalize="none" placeholder=" " value={emailAddress} onChangeText={setEmailAddress} style={styles.inputField} />
 
           <Pressable onPress={onRequestReset} style={styles.button}><Text style={styles.text}>Send Email Reset</Text></Pressable>
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     padding: 40,
   },
   inputField: {
