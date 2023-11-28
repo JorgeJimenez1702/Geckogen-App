@@ -1,29 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { TextInput, View, StyleSheet, Text, TouchableOpacity, Alert, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
-import { Ionicons } from '@expo/vector-icons';
-import { format } from 'date-fns';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Link } from 'expo-router';
+import React, { useState, useEffect } from "react";
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Alert,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
+import { Ionicons } from "@expo/vector-icons";
+import { format } from "date-fns";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Link } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
 
 const initialFormData = {
-  name: '',
-  specimen: '',
-  weight: '',
-  sex: '',
+  name: "",
+  specimen: "",
+  weight: "",
+  sex: "",
 };
 
-const GeckoForm = () => {
+interface myGeckoType {
+  name: string;
+  specimen: string;
+  weight: string;
+  sex: string;
+  birth: Date;
+}
 
-  const handleGoBack = () => {
-  };
+const GeckoForm = () => {
+  const handleGoBack = () => {};
+
+  const { user } = useUser();
 
   // Estado del formulario
-  const [name, setName] = useState('');
-  const [specimen, setSpecimen] = useState('');
-  const [weight, setWeight] = useState('');
-  const [sex, setSex] = useState('');
+  const [name, setName] = useState("");
+  const [specimen, setSpecimen] = useState("");
+  const [weight, setWeight] = useState("");
+  const [sex, setSex] = useState("");
   const [isFormFilled, setIsFormFilled] = useState(false);
 
   // Estado del selector de fecha
@@ -35,7 +54,7 @@ const GeckoForm = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const storedData = await AsyncStorage.getItem('geckoFormData');
+        const storedData = await AsyncStorage.getItem("geckoFormData");
         if (storedData) {
           const parsedData = JSON.parse(storedData);
           setName(parsedData.name);
@@ -46,14 +65,12 @@ const GeckoForm = () => {
           setIsDateSelected(true);
         }
       } catch (error) {
-        console.error('Error loading data from AsyncStorage:', error);
+        console.error("Error loading data from AsyncStorage:", error);
       }
     };
 
     loadData();
   }, []); // El array vacío significa que este efecto se ejecutará solo al montar el componente
-
-  
 
   // Guardar datos en AsyncStorage cuando el formulario cambia
   useEffect(() => {
@@ -66,9 +83,9 @@ const GeckoForm = () => {
           sex,
           selectedDate,
         };
-        await AsyncStorage.setItem('geckoFormData', JSON.stringify(formData));
+        await AsyncStorage.setItem("geckoFormData", JSON.stringify(formData));
       } catch (error) {
-        console.error('Error saving data to AsyncStorage:', error);
+        console.error("Error saving data to AsyncStorage:", error);
       }
     };
 
@@ -78,12 +95,12 @@ const GeckoForm = () => {
   // Verificar si el formulario está lleno
   useEffect(() => {
     const isFilled =
-      name.trim() !== '' &&
-      specimen.trim() !== '' &&
+      name.trim() !== "" &&
+      specimen.trim() !== "" &&
       isDateSelected &&
       selectedDate !== null &&
-      weight.trim() !== '' &&
-      sex !== '';
+      weight.trim() !== "" &&
+      sex !== "";
 
     setIsFormFilled(isFilled);
   }, [name, specimen, isDateSelected, selectedDate, weight, sex]);
@@ -106,30 +123,36 @@ const GeckoForm = () => {
   // Manejar cambios en los campos del formulario
   const handleFieldChange = (value: string, field: string) => {
     switch (field) {
-      case 'name':
+      case "name":
         if (value.length <= 50) {
           setName(value);
         } else {
-          Alert.alert('Error', 'Name should not exceed 50 characters.');
+          Alert.alert("Error", "Name should not exceed 50 characters.");
         }
         break;
-      case 'specimen':
+      case "specimen":
         if (value.length <= 50) {
           setSpecimen(value);
         } else {
-          Alert.alert('Error', 'Specimen should not exceed 50 characters.');
+          Alert.alert("Error", "Specimen should not exceed 50 characters.");
         }
         break;
-      case 'weight':
+      case "weight":
         const weightRegex = /^(\d+)(g?)$/;
         const match = value.match(weightRegex);
         const numericValue = match ? Number(match[1]) : NaN;
 
-        if (value === '' || (match && numericValue > 0 && numericValue <= 1000)) {
+        if (
+          value === "" ||
+          (match && numericValue > 0 && numericValue <= 1000)
+        ) {
           // Si el campo está vacío o el valor es válido, establece el nuevo valor
           setWeight(value);
         } else {
-          Alert.alert('Error', 'Weight should be in the range of 1g to 1000g and cannot be 0.');
+          Alert.alert(
+            "Error",
+            "Weight should be in the range of 1g to 1000g and cannot be 0."
+          );
         }
         break;
     }
@@ -142,39 +165,65 @@ const GeckoForm = () => {
 
   // Función para restablecer el formulario
   const resetForm = () => {
-    setName('');
-    setSpecimen('');
-    setWeight('');
-    setSex('');
+    setName("");
+    setSpecimen("");
+    setWeight("");
+    setSex("");
     setSelectedDate(new Date());
     setIsDateSelected(false);
     setIsFormFilled(false);
   };
 
   // Guardar los datos del gecko
-  const handleSaveGeckoData = () => {
+  const handleSaveGeckoData = async (myGeckoInfo: myGeckoType) => {
     if (isFormFilled) {
-      
+
+      //try catch sending form data to firebase
+      try {
+        const response = await fetch(
+          `https://api-jtnmag5rtq-uc.a.run.app/api/mygecko/${user?.id}`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json;charset=UTF-8",
+            },
+            body: JSON.stringify(myGeckoInfo),
+          }
+        );
+
+
+        if (response.ok) {
+          console.log("User Updated Successfully");
+          Alert.alert("Success", "Gecko data saved successfully.");
+        } else {
+          Alert.alert("Error", "Error saving the Gecko Data");
+        }
+
+
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+
+
       // Resetear el formulario después de guardar
       resetForm();
-      Alert.alert('Success', 'Gecko data saved successfully.');
     } else {
-      Alert.alert('Error', 'Please fill in all fields.');
+      Alert.alert("Error", "Please fill in all fields.");
     }
   };
 
   // Renderizar el formulario
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Comportamiento de ajuste del teclado
+      behavior={Platform.OS === "ios" ? "padding" : "height"} // Comportamiento de ajuste del teclado
       style={{ flex: 1 }}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.header}>
+        <View style={styles.header}>
           <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-          <Link href="/(auth)/mygecko">
-            <Ionicons name="chevron-back" size={28} color="#0076E4" />
-          </Link>
+            <Link href="/(auth)/mygecko">
+              <Ionicons name="chevron-back" size={28} color="#0076E4" />
+            </Link>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Add a new gecko</Text>
         </View>
@@ -187,7 +236,7 @@ const GeckoForm = () => {
               placeholderTextColor="#D0D0D0"
               value={name}
               onChangeText={(value) => {
-                handleFieldChange(value, 'name');
+                handleFieldChange(value, "name");
               }}
               style={styles.inputField}
             />
@@ -198,7 +247,7 @@ const GeckoForm = () => {
               placeholderTextColor="#D0D0D0"
               value={specimen}
               onChangeText={(value) => {
-                handleFieldChange(value, 'specimen');
+                handleFieldChange(value, "specimen");
               }}
               style={styles.inputField}
             />
@@ -208,8 +257,8 @@ const GeckoForm = () => {
             <Text style={styles.text}>Hatch date</Text>
             <View style={styles.dateInputContainer}>
               <TextInput
-                value={isDateSelected ? format(selectedDate, 'yyyy-MM-dd') : ''}
-                placeholder={isDateSelected ? '' : "Enter gecko's hatch date"}
+                value={isDateSelected ? format(selectedDate, "yyyy-MM-dd") : ""}
+                placeholder={isDateSelected ? "" : "Enter gecko's hatch date"}
                 style={[
                   styles.inputFieldWithIcon,
                   isDateSelected && styles.selectedDateText,
@@ -230,7 +279,7 @@ const GeckoForm = () => {
               value={selectedDate}
               mode="date"
               is24Hour={true}
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              display={Platform.OS === "ios" ? "spinner" : "default"}
               onChange={handleDateChange}
             />
           )}
@@ -242,7 +291,7 @@ const GeckoForm = () => {
             placeholderTextColor="#D0D0D0"
             value={weight}
             onChangeText={(value) => {
-              handleFieldChange(value, 'weight');
+              handleFieldChange(value, "weight");
             }}
             style={styles.inputField}
           />
@@ -262,7 +311,7 @@ const GeckoForm = () => {
                 <Picker.Item label="Female" value="female" />
                 <Picker.Item label="Male" value="male" />
               </Picker>
-              {sex === '' && (
+              {sex === "" && (
                 <Text style={styles.placeholderText}>
                   Enter your gecko's sexing
                 </Text>
@@ -274,9 +323,17 @@ const GeckoForm = () => {
             <TouchableOpacity
               style={{
                 ...styles.saveButton,
-                backgroundColor: isFormFilled ? '#2196F3' : '#D0D0D0',
+                backgroundColor: isFormFilled ? "#2196F3" : "#D0D0D0",
               }}
-              onPress={handleSaveGeckoData}
+              onPress={() =>
+                handleSaveGeckoData({
+                  name,
+                  specimen,
+                  weight,
+                  sex,
+                  birth: selectedDate,
+                })
+              }
               disabled={!isFormFilled}
             >
               <Text style={styles.buttonText}>Add gecko</Text>
@@ -290,14 +347,14 @@ const GeckoForm = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
     paddingHorizontal: 30,
   },
   scrollContainer: {
-  flexGrow: 1,
-  justifyContent: 'flex-start',
+    flexGrow: 1,
+    justifyContent: "flex-start",
   },
   inputContainer: {
     marginTop: 50,
@@ -309,10 +366,10 @@ const styles = StyleSheet.create({
   inputField: {
     height: 50,
     borderWidth: 1,
-    borderColor: '#D0D0D0',
+    borderColor: "#D0D0D0",
     borderRadius: 10,
-    backgroundColor: '#fff',
-    textAlign: 'left',
+    backgroundColor: "#fff",
+    textAlign: "left",
     padding: 15,
     marginBottom: 10,
   },
@@ -320,28 +377,28 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     borderWidth: 1,
-    borderColor: '#D0D0D0',
+    borderColor: "#D0D0D0",
     borderRadius: 10,
-    backgroundColor: '#fff',
-    textAlign: 'left',
+    backgroundColor: "#fff",
+    textAlign: "left",
     padding: 15,
     paddingRight: 40,
   },
   datePickerButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 15,
     right: 15,
   },
   dateInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   text: {
     paddingVertical: 10,
-    color: '#000',
+    color: "#000",
     fontSize: 14,
-    fontStyle: 'normal',
-    fontWeight: '400',
+    fontStyle: "normal",
+    fontWeight: "400",
     lineHeight: 24,
     marginBottom: -10,
   },
@@ -349,28 +406,28 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   pickerWithText: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     height: 50,
     borderWidth: 1,
-    borderColor: '#D0D0D0',
+    borderColor: "#D0D0D0",
     borderRadius: 10,
-    backgroundColor: '#fff',
-    overflow: 'hidden',
+    backgroundColor: "#fff",
+    overflow: "hidden",
     marginTop: 2,
   },
   pickerStyle: {
     flex: 1,
     height: 50,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderWidth: 0,
     marginRight: 5,
   },
   placeholderText: {
-    color: '#D0D0D0',
+    color: "#D0D0D0",
     flex: 1,
     marginLeft: 15,
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 15,
@@ -382,33 +439,33 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 50,
     marginLeft: -30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
   },
   selectedDateText: {
-    color: '#000',
+    color: "#000",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
     paddingHorizontal: 80,
-    marginBottom: 40, 
+    marginBottom: 40,
   },
   backButton: {
-    marginRight: 20, 
-    marginTop: 50, 
+    marginRight: 20,
+    marginTop: 50,
   },
   headerTitle: {
     fontSize: 18,
-    color: 'black',
-    marginLeft: 10, 
-    marginTop: 50, 
+    color: "black",
+    marginLeft: 10,
+    marginTop: 50,
   },
 });
 

@@ -2,13 +2,19 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 
 
-const MyGeckoComponent = (Name: {Name: string}) => {
+const MyGeckoComponent = (object: {geckosInterface: {
+  name: string;
+  specimen: string;
+  weight: string;
+  sex: string;
+  birth: Date;
+}}) => {
   return (
     <View>
       <Link
-      href={"./(mygeckoScreens)/myGeckoInterface"} asChild>
+      href={"./(mygeckoScreens)/geckoMain"} asChild>
         <TouchableOpacity style={styles.moduleBox}>
-          <Text style={styles.moduleText}>{Name.Name}</Text>
+          <Text style={styles.moduleText}>{object.geckosInterface.name}</Text>
         </TouchableOpacity>
       </Link>
     </View>

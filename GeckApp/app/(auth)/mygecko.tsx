@@ -5,10 +5,14 @@ import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { GeckoSearchParams } from "../(mygeckoScreens)/types";
 import Spinner from 'react-native-loading-spinner-overlay';
 import MyGeckoComponent from "../(mygeckoScreens)/myGeckoComponent";
-
+import { useUser } from '@clerk/clerk-expo';
 
 interface geckosInterface {
-  Name: string,
+  name: string;
+  specimen: string;
+  weight: string;
+  sex: string;
+  birth: Date;
 }
 
 const MyGecko = () => {
@@ -37,13 +41,14 @@ const MyGecko = () => {
     });
   };
   */
+  const { user } = useUser();
   const [geckos, setGeckos] = useState<geckosInterface[]>();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getGeckos = async () => {
       try {
-        const response = await fetch('https://06ac-187-137-2-145.ngrok-free.app/geckogen-a0538/us-central1/app/api/terrariums');
+        const response = await fetch(`https://api-jtnmag5rtq-uc.a.run.app/api/mygecko/${user?.id}`);
         if (response.ok) {
           const result = await response.json();
           setGeckos(result);
@@ -70,12 +75,17 @@ const MyGecko = () => {
         geckos.map((geckos, idx) => {
           return (
             <View key={idx}>
-              <MyGeckoComponent Name={geckos.Name}></MyGeckoComponent>
+              <MyGeckoComponent geckosInterface={geckos}></MyGeckoComponent>
             </View>
           )
         })
       ) : (
-        <Spinner visible={isLoading} />
+        <View>
+          <Text>
+            Oh, looks like you don't have any gecko!
+          </Text>
+          <Text>Click here to add a new one</Text>
+        </View>
       )}
     </View>
   );

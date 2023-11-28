@@ -10,9 +10,10 @@ const myGeckoLayout = () => {
     }}
   >
     <Stack.Screen
-      name="myGeckoInterface"
+      name="geckoMain"
       options={{
-        headerTitle: "My Gecko",
+        headerTitle: "",
+        headerShown: false,
       }}
     ></Stack.Screen>
   </Stack>;
