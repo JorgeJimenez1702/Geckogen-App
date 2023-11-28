@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import GeneralCareSheetModal from './geckoModalCareSheet'; 
-import GeckoModalEvents from './geckoModalEvents';
+
 
 const GeckoMain = () => {
   const [isGeneralCareModalVisible, setGeneralCareModalVisible] = useState(false);
@@ -103,9 +103,9 @@ const GeckoMain = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Renderiza el modal */}
+      
       <GeneralCareSheetModal isVisible={isGeneralCareModalVisible} closeModal={closeGeneralCareModal} />
-      <GeckoModalEvents isVisible={isEventsModalVisible} closeModal={closeEventsModal} />
+      
     </View>
   );
 };
