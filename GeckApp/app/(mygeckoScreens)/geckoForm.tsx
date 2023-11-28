@@ -53,6 +53,7 @@ const GeckoForm = () => {
 
   // Cargar datos almacenados en AsyncStorage al iniciar
   useEffect(() => {
+    console.log("GECKOFORM OPEN");
     const loadData = async () => {
       try {
         const storedData = await AsyncStorage.getItem("geckoFormData");
@@ -215,6 +216,8 @@ const GeckoForm = () => {
       style={{ flex: 1 }}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+
+
         <View style={styles.header}>
           <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
             <Link href="/(auth)/mygecko">
@@ -223,6 +226,7 @@ const GeckoForm = () => {
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Add a new gecko</Text>
         </View>
+        
         <View style={styles.container}>
           <View style={styles.inputContainer}>
             <Text style={styles.text}>Name</Text>

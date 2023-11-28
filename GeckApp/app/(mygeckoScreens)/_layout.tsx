@@ -17,9 +17,29 @@ const myGeckoLayout = () => {
       }}
     ></Stack.Screen>
     <Stack.Screen
-      name="geckoForm"
+      name="addGecko"
       options={{
-        headerTitle: "",
+        headerTitle: "ADD GECKO",
+        headerShown: false,
+      }}
+    ></Stack.Screen>
+    <Stack.Screen
+      name="GeckoForm"
+      options={{
+        headerTitle: "geckoForm",
+      }}
+    ></Stack.Screen>
+    <Stack.Screen
+      name="geckoModalCareSheet"
+      options={{
+        headerTitle: "geckoForm",
+        headerShown: false,
+      }}
+    ></Stack.Screen>
+    <Stack.Screen
+      name="geckoComponent"
+      options={{
+        headerTitle: "geckoForm",
         headerShown: false,
       }}
     ></Stack.Screen>
