@@ -52,30 +52,6 @@ const TabsPage = () => {
         }}
         redirect={!isSignedIn}
       />
-        <Tabs.Screen
-        name="mygecko"
-        options={{
-          headerTitle: 'My Gecko',
-          headerTitleStyle: { fontSize: 14 },
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <Ionicons name="egg-outline" size={size} color={color} />,
-          tabBarLabel: 'My Gecko',
-          headerRight: () => <LogoutButton />,
-        }}
-        redirect={!isSignedIn}
-      />
-         <Tabs.Screen
-        name="terrarium"
-        options={{
-          headerTitle: 'Terrarium',
-          headerTitleStyle: { fontSize: 14 },
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <Ionicons name="analytics-outline" size={size} color={color} />,
-          tabBarLabel: 'Terrarium',
-          headerRight: () => <LogoutButton />,
-        }}
-        redirect={!isSignedIn}
-      />
       <Tabs.Screen
         name="mygecko"
         options={{
