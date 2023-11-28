@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Pressable, StyleSheet, Text } from "react-native";
+import { View, Pressable, StyleSheet, Text, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
-import { GeckoSearchParams } from "../(mygeckoScreens)/types";
 import Spinner from "react-native-loading-spinner-overlay";
-import MyGeckoComponent from "../(mygeckoScreens)/myGeckoComponent";
 import { useUser } from "@clerk/clerk-expo";
+import MyGeckoComponent from "../(MyGeckoScreens)/myGeckoComponent";
 
 interface geckosInterface {
   name: string;
@@ -18,7 +17,6 @@ interface geckosInterface {
 const MyGecko = () => {
   /*
   const params = useLocalSearchParams<GeckoSearchParams>();
-  const router = useRouter();
   const [geckoNames, setGeckoNames] = useState<string[]>([]);
 
   useEffect(() => {
@@ -28,19 +26,8 @@ const MyGecko = () => {
         ...(params.geckoName ? [params.geckoName] : []),
       ]);
     }
-  }, [params.geckoName]);
+  }, [params.geckoName]);*/
 
-  const handleLinkPress = () => {
-    const newGeckoName = "geckoname";
-
-    router.push({
-      pathname: "/(mygeckoScreens)/geckoForm",
-      params: {
-        geckoName: newGeckoName,
-      },
-    });
-  };
-  */
   const { user } = useUser();
   const [geckos, setGeckos] = useState<geckosInterface[]>();
   const [isLoading, setIsLoading] = useState(true);
@@ -66,27 +53,31 @@ const MyGecko = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      {geckos && geckos.length > 0 && !isLoading ? (
-        geckos?.map((geckos, idx) => {
-          return (
-            <View key={idx}>
-              <MyGeckoComponent geckosInterface={geckos}></MyGeckoComponent>
-            </View>
-          );
-        })
-      ) : (
-        <View>
-          <Text>Oh, looks like you don't have any gecko!</Text>
-          <Text>Click here to add a new one</Text>
-        </View>
-      )}
-      <Link href={"/(mygeckoScreens)/addGecko"} asChild>
-        <Pressable style={{ marginRight: 15 }}>
-          <Ionicons name="add-circle-outline" size={28} color={"#0076E4"} />
-        </Pressable>
-      </Link>
-    </View>
+    <ScrollView style={styles.container}>
+      <View>
+        {geckos && geckos.length > 0 && !isLoading ? (
+          geckos?.map((geckos, idx) => {
+            return (
+              <View key={idx}>
+                <MyGeckoComponent geckosInterface={geckos}></MyGeckoComponent>
+              </View>
+            );
+          })
+        ) : (
+          <View>
+            <Text>Oh, looks like you don't have any gecko!</Text>
+            <Text>Click here to add a new one</Text>
+          </View>
+        )}
+      </View>
+      <View>
+        <Link href={"/(MyGeckoScreens)/addGecko"} asChild>
+          <Pressable style={{ marginRight: 15 }}>
+            <Ionicons name="add-circle-outline" size={28} color={"#0076E4"} />
+          </Pressable>
+        </Link>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -94,7 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "flex-end",
+    contentContainerStyle: "flex-end",
     padding: 10,
     backgroundColor: "#fff",
   },

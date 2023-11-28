@@ -20,7 +20,6 @@ const myGeckoLayout = () => {
       name="addGecko"
       options={{
         headerTitle: "ADD GECKO",
-        headerShown: false,
       }}
     ></Stack.Screen>
     <Stack.Screen

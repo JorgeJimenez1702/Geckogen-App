@@ -217,7 +217,6 @@ const GeckoForm = () => {
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
 
-
         <View style={styles.header}>
           <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
             <Link href="/(auth)/mygecko">
