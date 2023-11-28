@@ -36,7 +36,7 @@ const TabsPage = () => {
           headerTitle: 'Home',
           headerTitleStyle: { fontSize: 14 },
           headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <Ionicons name="ellipse-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="home-outline" size={size} color={color} />,
           tabBarLabel: 'Home',
         }}
         redirect={!isSignedIn}
@@ -47,7 +47,7 @@ const TabsPage = () => {
           headerTitle: 'My Gecko',
           headerTitleStyle: { fontSize: 14 },
           headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <Ionicons name="ellipse-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="egg-outline" size={size} color={color} />,
           tabBarLabel: 'My Gecko',
           headerRight: () => <LogoutButton />,
         }}
@@ -59,7 +59,7 @@ const TabsPage = () => {
           headerTitle: 'Terrarium',
           headerTitleStyle: { fontSize: 14 },
           headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <Ionicons name="ellipse-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="analytics-outline" size={size} color={color} />,
           tabBarLabel: 'Terrarium',
           headerRight: () => <LogoutButton />,
         }}
@@ -71,7 +71,7 @@ const TabsPage = () => {
           headerTitle: 'Account',
           headerTitleStyle: { fontSize: 14 },
           headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <Ionicons name="ellipse-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="person-circle-outline" size={size} color={color} />,
           tabBarLabel: 'Account',
           headerRight: () => <LogoutButton />,
         }}
