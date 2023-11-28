@@ -17,7 +17,6 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [pendingVerification, setPendingVerification] = useState(false);
 
-  // Create the user and send the verification email
   const onSignUpPress = async () => {
     if (!isLoaded) {
       return;
@@ -25,7 +24,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      // Create the user on Clerk
+
       await signUp.create({
         firstName,
         lastName,
@@ -33,10 +32,9 @@ const Register = () => {
         password,
       });
 
-      // Send verification Email
+
       await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
 
-      // change the UI to verify the email address
       setPendingVerification(true);
     } catch (err: any) {
       alert(err.errors[0].message);
@@ -45,7 +43,6 @@ const Register = () => {
     }
   };
 
-  // Verify the email address
   const onPressVerify = async () => {
     if (!isLoaded) {
       return;

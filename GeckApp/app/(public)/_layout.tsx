@@ -1,35 +1,48 @@
 import React from 'react';
-import { Stack } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 
 const PublicLayout = () => {
   return (
     <Stack
       screenOptions={{
-        headerStyle: {
-          backgroundColor: '#FFF',
-        },
-        headerTintColor: '#000',
-        
+        headerTintColor: '#FFF',
       }}>
       <Stack.Screen
         name="welcome"
         options={{
-          headerTitle: '',
+          headerTitle: 'Welcome To Geckogen',
+          headerTransparent: true,
+          headerBlurEffect: 'extraLight',
+        }}></Stack.Screen>
+      <Stack.Screen
+        name="initialpage"
+        options={{
+          headerTitle:'',
+          headerTintColor: '#0076E4',
+          headerLargeStyle: {backgroundColor: '#FFF'},
+          headerBackVisible: false,
         }}></Stack.Screen>
       <Stack.Screen
         name="login"
         options={{
           headerTitle: 'Log In',
+          headerTintColor: '#000000',
+          headerLargeStyle: {backgroundColor: '#FFF'},
         }}></Stack.Screen>
       <Stack.Screen
         name="register"
         options={{
           headerTitle: 'Sign Up',
+          headerTintColor: '#000000',
+          headerLargeStyle: {backgroundColor: '#FFF'},
         }}></Stack.Screen>
       <Stack.Screen
         name="reset"
         options={{
           headerTitle: 'Reset Password',
+          headerTintColor: '#000000',
+          headerLargeStyle: {backgroundColor: '#FFF'},
+          headerBackTitleVisible: false,
         }}></Stack.Screen>
     </Stack>
   );

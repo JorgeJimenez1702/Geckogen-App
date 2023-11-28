@@ -1,87 +1,74 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, StatusBar } from 'react-native';
 import { Link } from 'expo-router';
+
+const image = { uri: 'https://s3-alpha-sig.figma.com/img/d64c/e417/a6ab7a6d0632a9974bf10c5ec22e4b9a?Expires=1701648000&Signature=bNc~VZIhflMSnQ3z6Y9k4DQye5gEZbJa62TnOzBdyIMRLB1Iaxi8zcAkmDmo2gsTDN~jn~IAVzlrlsIGpgBsiyPmPfO~Awu09Q6Y6ozU7xf-a9SVGdjMmlEkARbOInzxjACt-aHE9-5ClfPOSShFnh9j56X1yJsOhr9WhHtIObzX96uo8QNmkVAm91iWCBoZ08ncfJKDc-HANghmdHOS3GbIMyN7lBVtkjKeqD-DPmA8E6Q8UZfWNB9EOEZ9UdgLhELs-Z53V5VvecwQIwROzFByORQ2O4IbUe9banZbCeauAY8B2t0mVBa8CTBLBoE9-eXMTbUWnnrhO0ZbGHlpSw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4' }
 
 const Welcome = () => {
     return (
         <View style={styles.container}>
-            <View>
-                <Text style={styles.title}>Welcome to Geckogen</Text>
-            </View>
+            <ImageBackground source={image} style={styles.image} imageStyle={{ opacity: 0.5 }}>
+                <View style={styles.buttonContainer}>
+                    <Text style={styles.title}>
+                        Home of the MONOCHROME
+                    </Text>
+                    <Text style={styles.subtitle}>
+                        Make your gecko life experience better now
+                    </Text>
 
-            <View>
-                <Link href="/login" asChild>
-                    <TouchableOpacity style={styles.loginButton}>
-                        <Text style={styles.loginText}>Log In</Text>
-                    </TouchableOpacity>
-                </Link>
-            </View>
-
-            <View style={styles.signinContainer}>
-                <Link href="/register" asChild>
-                    <TouchableOpacity style={styles.signinButton}>
-                        <Text style={styles.signinText}>Sign Up</Text>
-                    </TouchableOpacity>
-                </Link>
-            </View>
-
-            {/* 
-            
-            <Link href="/register" asChild>
-                <TouchableOpacity>
-                    <Text>Sign Up</Text>
-                </TouchableOpacity>
-            </Link>
-            
-            */}
+                    <Link href="/initialpage" asChild>
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.text}>Get Started!</Text>
+                        </TouchableOpacity>
+                    </Link>
+                </View>
+            </ImageBackground>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#FFF',
+        backgroundColor: '#000',
         flex: 1,
         justifyContent: 'flex-start',
-        paddingHorizontal: 30,
     },
-    title: {
-        color: '#000000',
-        fontSize: 24,
-        fontStyle: 'normal',
-        fontWeight: '700',
-        textAlign: 'center',
-        paddingTop: 0,
-        paddingBottom: 37,
-
+    buttonContainer: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.4)'
     },
-    loginButton: {
+    button: {
+        marginTop: 40,
+        marginHorizontal: 30,
         backgroundColor: '#0076E4',
         borderRadius: 15,
+        width: 350,
         height: 50,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
-    loginText: {
+    text: {
         color: '#D9D9D9',
         textAlign: 'center',
         fontSize: 17,
         fontWeight: "700",
     },
-    signinContainer: {
-        paddingTop: 8,
+    image: {
+        resizeMode: 'stretch',
+        width: 450,
+        height: 1000,
     },
-    signinButton: {
-        borderWidth: 1,
-        borderColor: '#D0D0D0',
-        height: 50,
-        borderRadius: 15,
-        justifyContent: 'center'
+    title: {
+        marginTop: 625,
+        marginHorizontal: 30,
+        color: '#FFF',
+        fontSize: 34,
+        fontWeight: '700',
     },
-    signinText: {
-        color: '#010101',
-        textAlign: 'center',
+    subtitle: {
+        marginHorizontal: 30,
+        color: '#FFF',
         fontSize: 17,
-        fontWeight: "700",
-
+        fontWeight: '400',
+        lineHeight: 24
     }
 });
 

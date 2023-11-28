@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Link, Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable } from 'react-native';
 import { useAuth } from '@clerk/clerk-expo';
@@ -13,8 +13,19 @@ export const LogoutButton = () => {
 
   return (
     <Pressable onPress={doLogout} style={{ marginRight: 10 }}>
-      <Ionicons name="log-out-outline" size={24} color={'#fff'} />
+      <Ionicons name="log-out-outline" size={24} color={'#000'} />
     </Pressable>
+  );
+};
+
+export const AddButton = () => {
+
+  return (
+    <Link href={"/(TerrariumFunctions)/AddTerrarium"} asChild>
+      <Pressable style={{ marginRight: 15 }}>
+        <Ionicons name="add-circle-outline" size={28} color={'#0076E4'} />
+      </Pressable>
+    </Link>
   );
 };
 
@@ -23,10 +34,10 @@ const TabsPage = () => {
 
   return (
 
-      <Tabs
+    <Tabs
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#FFFFFF',
+          backgroundColor: '#F8F8F8',
         },
         headerTintColor: '#000000',
       }}>
@@ -35,18 +46,18 @@ const TabsPage = () => {
         name="home"
         options={{
           headerTitle: 'Home',
-          headerTitleStyle: { fontSize: 14 },
+          headerTitleStyle: { fontSize: 16, color: '#000', fontStyle: 'normal', fontWeight: '400', lineHeight: 25, letterSpacing: -0.4 },
           headerTitleAlign: 'center',
           tabBarIcon: ({ color, size }) => <Ionicons name="ellipse-outline" size={size} color={color} />,
           tabBarLabel: 'Home',
         }}
         redirect={!isSignedIn}
       />
-        <Tabs.Screen
-        name="mygecko" 
+      <Tabs.Screen
+        name="mygecko"
         options={{
           headerTitle: 'My Gecko',
-          headerTitleStyle: { fontSize: 14 },
+          headerTitleStyle: { fontSize: 16, color: '#000', fontStyle: 'normal', fontWeight: '400', lineHeight: 25, letterSpacing: -0.4 },
           headerTitleAlign: 'center',
           tabBarIcon: ({ color, size }) => <Ionicons name="ellipse-outline" size={size} color={color} />,
           tabBarLabel: 'My Gecko',
@@ -54,27 +65,26 @@ const TabsPage = () => {
         }}
         redirect={!isSignedIn}
       />
-         <Tabs.Screen
+      <Tabs.Screen
         name="terrarium"
         options={{
           headerTitle: 'Terrarium',
-          headerTitleStyle: { fontSize: 14 },
+          headerTitleStyle: { fontSize: 16, color: '#000', fontStyle: 'normal', fontWeight: '400', lineHeight: 25, letterSpacing: -0.4 },
           headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <Ionicons name="ellipse-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="analytics" size={size} color={color} />,
           tabBarLabel: 'Terrarium',
-          headerRight: () => <LogoutButton />,
+          headerRight: () => <AddButton />
         }}
         redirect={!isSignedIn}
       />
       <Tabs.Screen
-        name="profile"
+        name="account"
         options={{
           headerTitle: 'Account',
-          headerTitleStyle: { fontSize: 14 },
+          headerTitleStyle: { fontSize: 16, color: '#000', fontStyle: 'normal', fontWeight: '400', lineHeight: 25, letterSpacing: -0.4 },
           headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <Ionicons name="ellipse-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="person-circle" size={size} color={color} />,
           tabBarLabel: 'Account',
-          headerRight: () => <LogoutButton />,
         }}
         redirect={!isSignedIn}
       />
