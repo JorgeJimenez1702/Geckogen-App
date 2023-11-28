@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import GeneralCareSheetModal from './geckoModalCareSheet'; 
+import GeckoModalEvents from './geckoModalEvents';
 
 const GeckoMain = () => {
-  const [isCareSheetModalVisible, setCareSheetModalVisible] = useState(false);
+  const [isGeneralCareModalVisible, setGeneralCareModalVisible] = useState(false);
+  const [isEventsModalVisible, setEventsModalVisible] = useState(false);
 
-  const openCareSheetModal = () => {
-    setCareSheetModalVisible(true);
+
+  const openGeneralCareModal = () => {
+    setGeneralCareModalVisible(true);
   };
 
-  const closeCareSheetModal = () => {
-    setCareSheetModalVisible(false);
+  const closeGeneralCareModal = () => {
+    setGeneralCareModalVisible(false);
+  };
+
+  const openEventsModal = () => {
+    setEventsModalVisible(true);
+  };
+
+  const closeEventsModal = () => {
+    setEventsModalVisible(false);
+  };
+
+  const navigateToEventsModal = () => {
+    openEventsModal(); 
   };
 
   return (
@@ -33,10 +49,12 @@ const GeckoMain = () => {
         </View>
       </View>
 
-      <TouchableOpacity onPress={openCareSheetModal} style={styles.additionalBox}>
-        <Ionicons name="document-text-outline" size={24} color="black" style={styles.icon} />
-        <Text style={styles.additionalBoxText}>General care sheet</Text>
-      </TouchableOpacity>
+      <View style={styles.additionalBox}>
+        <TouchableOpacity onPress={openGeneralCareModal}>
+          <Ionicons name="document-text-outline" size={24} color="black" style={styles.icon} />
+          <Text style={styles.additionalBoxText}>General care sheet</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.additionalBox}>
         <Ionicons name="bug-outline" size={24} color="black" style={styles.icon} />
@@ -51,7 +69,7 @@ const GeckoMain = () => {
             <Text style={styles.eventDescription}>Mating season</Text>
             <Text style={styles.eventSubtitle}>Early spring</Text>
             <Text style={styles.eventDescription}>Take advantage of this spring start to match your gecko.</Text>
-          </View>
+            </View>
         </View>
 
         <View style={styles.division}></View>
@@ -62,7 +80,7 @@ const GeckoMain = () => {
             <Text style={styles.eventSubtitle}>Skin Shedding</Text>
             <View style={styles.eventDetails}>
               <View style={styles.detailItem}>
-                <Text style={styles.detailSubtitle}>4</Text>
+                <Text style={styles.eventSubtitle}>4</Text>
                 <Text style={styles.detailSubText}>Days duration</Text>
               </View>
               <View style={styles.detailItem}>
@@ -78,35 +96,16 @@ const GeckoMain = () => {
         </View>
       </View>
 
-      <View style={styles.addEventBox}>
+        <View style={styles.addEventBox}>
+        <TouchableOpacity onPress={navigateToEventsModal}>
         <Text style={styles.addEventText}>Add Event</Text>
         <Ionicons name="add-circle-outline" size={60} color="white" style={styles.iconEvent} />
+        </TouchableOpacity>
       </View>
 
-      <Modal
-        transparent={true}
-        animationType="slide"
-        visible={isCareSheetModalVisible}
-        onRequestClose={closeCareSheetModal}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.titleModal}>Care sheet</Text>
-            </View>
-            <View style={styles.modalHeader}>
-            <Ionicons name="checkmark-circle-outline" size={30} color="#0076E4" />
-            <Text style={styles.subtitleModal}>General information</Text>
-            </View>
-
-            <Text></Text>
-            
-            <TouchableOpacity onPress={closeCareSheetModal} style={styles.closeButton}>
-              <Ionicons name="close-outline" size={30} color="black" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      {/* Renderiza el modal */}
+      <GeneralCareSheetModal isVisible={isGeneralCareModalVisible} closeModal={closeGeneralCareModal} />
+      <GeckoModalEvents isVisible={isEventsModalVisible} closeModal={closeEventsModal} />
     </View>
   );
 };
@@ -203,8 +202,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     padding: 8,
-    marginRight: 10,
-    width: 160, 
+    marginRight: 10,  
+    width: 330,
   },
   eventSubtitle: {
     fontSize: 16,
@@ -225,10 +224,6 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 14,
   },
-  detailSubtitle: {
-    fontSize: 16, 
-    marginTop: 3,
-  },
   detailSubText: {
     fontSize: 12,
     marginTop: 3,
@@ -248,46 +243,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: "#fff",
   },
-  iconEvent: {
+  iconEvent:{
     position: 'absolute',
-    right: -8,
-    top: '50%',
-    transform: [{ translateY: -25 }],
+    right: -60,
+    top: '35%',
+    transform: [{ translateY: -28 }],
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: 20,
-  },
-  modalContent: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    width: '100%',
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  titleModal: {
-    fontSize: 20,
-    fontWeight: '700',
-    flex: 1,
-  },
-  subtitleModal:{
-    fontSize: 14,
-    fontWeight: '700', 
-  },
+    
 });
 
 export default GeckoMain;
-

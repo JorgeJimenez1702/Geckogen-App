@@ -5,6 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Link } from 'expo-router';
 
 const initialFormData = {
   name: '',
@@ -14,6 +15,10 @@ const initialFormData = {
 };
 
 const GeckoForm = () => {
+
+  const handleGoBack = () => {
+  };
+
   // Estado del formulario
   const [name, setName] = useState('');
   const [specimen, setSpecimen] = useState('');
@@ -113,20 +118,18 @@ const GeckoForm = () => {
           Alert.alert('Error', 'Specimen should not exceed 50 characters.');
         }
         break;
-        case 'weight':
-          const weightRegex = /^(\d+)(g?)$/;
-          const match = value.match(weightRegex);
-    
-          if (value === '') {
-            // Si el campo está vacío, borra el valor
-            setWeight(value);
-          } else if (match && Number(match[1]) <= 1000) {
-            // Si el valor sigue siendo válido, establece el nuevo valor
-            setWeight(value);
-          } else {
-            Alert.alert('Error', 'Weight should be in the range of 1g to 1000g.');
-          }
-          break;
+      case 'weight':
+        const weightRegex = /^(\d+)(g?)$/;
+        const match = value.match(weightRegex);
+        const numericValue = match ? Number(match[1]) : NaN;
+
+        if (value === '' || (match && numericValue > 0 && numericValue <= 1000)) {
+          // Si el campo está vacío o el valor es válido, establece el nuevo valor
+          setWeight(value);
+        } else {
+          Alert.alert('Error', 'Weight should be in the range of 1g to 1000g and cannot be 0.');
+        }
+        break;
     }
   };
 
@@ -149,7 +152,7 @@ const GeckoForm = () => {
   // Guardar los datos del gecko
   const handleSaveGeckoData = () => {
     if (isFormFilled) {
-      // Lógica para guardar los datos
+    
       // Resetear el formulario después de guardar
       resetForm();
       Alert.alert('Success', 'Gecko data saved successfully.');
@@ -165,6 +168,14 @@ const GeckoForm = () => {
       style={{ flex: 1 }}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.header}>
+          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+          <Link href="/(auth)/mygecko">
+            <Ionicons name="chevron-back" size={28} color="#0076E4" />
+          </Link>
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Add a new gecko</Text>
+        </View>
         <View style={styles.container}>
           <View style={styles.inputContainer}>
             <Text style={styles.text}>Name</Text>
@@ -380,7 +391,23 @@ const styles = StyleSheet.create({
   selectedDateText: {
     color: '#000',
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 80,
+    marginBottom: 40, 
+  },
+  backButton: {
+    marginRight: 20, 
+    marginTop: 50, 
+  },
+  headerTitle: {
+    fontSize: 18,
+    color: 'black',
+    marginLeft: 10, 
+    marginTop: 50, 
+  },
 });
 
 export default GeckoForm;
-
