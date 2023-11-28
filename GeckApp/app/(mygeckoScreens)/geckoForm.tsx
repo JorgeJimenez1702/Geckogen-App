@@ -53,6 +53,8 @@ const GeckoForm = () => {
     loadData();
   }, []); // El array vacío significa que este efecto se ejecutará solo al montar el componente
 
+  
+
   // Guardar datos en AsyncStorage cuando el formulario cambia
   useEffect(() => {
     const saveData = async () => {
@@ -152,7 +154,7 @@ const GeckoForm = () => {
   // Guardar los datos del gecko
   const handleSaveGeckoData = () => {
     if (isFormFilled) {
-    
+      
       // Resetear el formulario después de guardar
       resetForm();
       Alert.alert('Success', 'Gecko data saved successfully.');
