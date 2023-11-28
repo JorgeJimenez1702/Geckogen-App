@@ -16,6 +16,13 @@ const myGeckoLayout = () => {
         headerShown: false,
       }}
     ></Stack.Screen>
+    <Stack.Screen
+      name="geckoForm"
+      options={{
+        headerTitle: "",
+        headerShown: false,
+      }}
+    ></Stack.Screen>
   </Stack>;
 };
 

@@ -7,7 +7,7 @@ const MyGeckoComponent = (object: {geckosInterface: {
   specimen: string;
   weight: string;
   sex: string;
-  birth: Date;
+  dateObject: Date;
 }}) => {
   return (
     <View>

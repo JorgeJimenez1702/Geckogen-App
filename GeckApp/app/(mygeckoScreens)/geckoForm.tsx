@@ -26,6 +26,7 @@ const initialFormData = {
 };
 
 interface myGeckoType {
+  userId: string;
   name: string;
   specimen: string;
   weight: string;
@@ -177,7 +178,6 @@ const GeckoForm = () => {
   // Guardar los datos del gecko
   const handleSaveGeckoData = async (myGeckoInfo: myGeckoType) => {
     if (isFormFilled) {
-
       //try catch sending form data to firebase
       try {
         const response = await fetch(
@@ -191,19 +191,15 @@ const GeckoForm = () => {
           }
         );
 
-
         if (response.ok) {
           console.log("User Updated Successfully");
           Alert.alert("Success", "Gecko data saved successfully.");
         } else {
           Alert.alert("Error", "Error saving the Gecko Data");
         }
-
-
       } catch (error) {
         console.error("Error fetching users:", error);
       }
-
 
       // Resetear el formulario después de guardar
       resetForm();
@@ -327,6 +323,7 @@ const GeckoForm = () => {
               }}
               onPress={() =>
                 handleSaveGeckoData({
+                  userId: user?.id as string,
                   name,
                   specimen,
                   weight,

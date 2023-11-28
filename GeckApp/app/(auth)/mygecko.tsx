@@ -12,7 +12,7 @@ interface geckosInterface {
   specimen: string;
   weight: string;
   sex: string;
-  birth: Date;
+  dateObject: Date;
 }
 
 const MyGecko = () => {
@@ -48,7 +48,7 @@ const MyGecko = () => {
   useEffect(() => {
     const getGeckos = async () => {
       try {
-        const response = await fetch(`https://api-jtnmag5rtq-uc.a.run.app/api/mygecko/${user?.id}`);
+        const response = await fetch(`https://api-jtnmag5rtq-uc.a.run.app/api/mygeckos/${user?.id}`);
         if (response.ok) {
           const result = await response.json();
           setGeckos(result);
@@ -65,12 +65,6 @@ const MyGecko = () => {
   
   return (
     <View style={styles.container}>
-      <Link href="./(mygeckoScreens)/geckoForm" asChild>
-        <TouchableOpacity style={styles.touchable}>
-          <Ionicons name="add-circle-outline" size={34} color="#0076E4" />
-        </TouchableOpacity>
-      </Link>
-
       {geckos && !isLoading ? (
         geckos.map((geckos, idx) => {
           return (
@@ -87,6 +81,15 @@ const MyGecko = () => {
           <Text>Click here to add a new one</Text>
         </View>
       )}
+
+
+      <Link href="/(mygeckoScreens)/geckoForm" asChild>
+        <TouchableOpacity style={styles.touchable}>
+          <Ionicons name="add-circle-outline" size={34} color="#0076E4" />
+        </TouchableOpacity>
+      </Link>
+
+      
     </View>
   );
 };
