@@ -20,7 +20,7 @@ export const LogoutButton = () => {
 export const AddButtonMyGecko = () => {
   return (
     <View>
-      <Link href={"/(mygeckoScreens)/geckoForm"} asChild>
+      <Link href={"/(mygeckoScreens)/GeckoForm"} asChild>
         <TouchableOpacity style={{ marginLeft: 10 }}>
           <Ionicons name="add-circle-outline" size={28} color={"#0076E4"} />
         </TouchableOpacity>

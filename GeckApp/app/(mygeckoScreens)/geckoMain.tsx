@@ -1,20 +1,29 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import GeneralCareSheetModal from "./geckoModalCareSheet";
-import { Link, Stack } from "expo-router";
+import { Link, Stack, useLocalSearchParams } from "expo-router";
 
 export const BackButton = () => {
   return (
-      <Link href={"/(auth)/mygecko"} asChild>
-          <Pressable style={{ marginRight: 15 }}>
-              <Ionicons name="chevron-back" size={28} color={'#0076E4'} />
-          </Pressable>
-      </Link>
+    <Link href={"/(auth)/mygecko"} asChild>
+      <Pressable style={{ marginRight: 15 }}>
+        <Ionicons name="chevron-back" size={28} color={"#0076E4"} />
+      </Pressable>
+    </Link>
   );
 };
 
 const GeckoMain = () => {
+  const params = useLocalSearchParams();
+  const { userId, name, specimen, weight, sex, dateObject } = params;
+
   const [isGeneralCareModalVisible, setGeneralCareModalVisible] =
     useState(false);
   const [isEventsModalVisible, setEventsModalVisible] = useState(false);
@@ -44,13 +53,13 @@ const GeckoMain = () => {
       <Stack.Screen
         options={{
           headerTitle: " ",
-          headerTintColor: '#000',
+          headerTintColor: "#000",
           headerTransparent: true,
-          headerBlurEffect: 'extraLight',
+          headerBlurEffect: "extraLight",
           headerLeft: () => <BackButton />,
         }}
       />
-      <Text style={styles.text}>Apocalypto</Text>
+      <Text style={styles.text}>{name}</Text>
 
       <View style={styles.boxContainer}>
         <View style={styles.leftBox}>
@@ -61,9 +70,9 @@ const GeckoMain = () => {
         <View style={styles.division}></View>
 
         <View style={styles.rightBox}>
-          <Text style={styles.extraLargeText}>4</Text>
+          <Text style={styles.extraLargeText}>{weight}</Text>
           <Text style={styles.smallText}>Weight (gr)</Text>
-          <Text style={styles.mediumText}>Male</Text>
+          <Text style={styles.mediumText}>{sex}</Text>
           <Text style={styles.smallText}>Sexing</Text>
         </View>
       </View>

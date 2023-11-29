@@ -8,12 +8,18 @@ const MyGeckoComponent = (object: {geckosInterface: {
   specimen: string;
   weight: string;
   sex: string;
-  dateObject: Date;
+  dateObject: string;
 }}) => {
+
+
+
   return (
     <View>
       <Link
-      href={"/(mygeckoScreens)/GeckoMain"} asChild>
+      href={{
+        pathname: "/(mygeckoScreens)/GeckoMain",
+        params: object.geckosInterface,
+    }} asChild>
         <TouchableOpacity style={styles.moduleBox}>
           <Text style={styles.moduleText}>{object.geckosInterface.name}</Text>
         </TouchableOpacity>

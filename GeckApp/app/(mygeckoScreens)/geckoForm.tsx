@@ -191,7 +191,6 @@ const GeckoForm = () => {
           sex,
           birth: dateObject1,
         };
-        console.log(MyGeckoInfo);
         const response = await fetch(
           `https://api-jtnmag5rtq-uc.a.run.app/api/mygeckos`,
           {
@@ -208,7 +207,7 @@ const GeckoForm = () => {
           console.log("Gecko Uploaded Successfully");
           Alert.alert("Success", "Gecko data saved successfully.");
         } else {
-          Alert.alert("Success", "Gecko data saved successfully");
+          Alert.alert("Error", "Error saving gecko DataTransfer.");
         }
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -454,6 +453,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   header: {
+    backgroundColor: '#FFF',
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",

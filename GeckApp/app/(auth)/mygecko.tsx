@@ -17,7 +17,7 @@ interface geckosInterface {
   specimen: string;
   weight: string;
   sex: string;
-  dateObject: Date;
+  dateObject: string;
 }
 
 const MyGecko = () => {
@@ -25,6 +25,7 @@ const MyGecko = () => {
   const { user } = useUser();
   const [geckos, setGeckos] = useState<geckosInterface[]>();
   const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     const getGeckos = async () => {

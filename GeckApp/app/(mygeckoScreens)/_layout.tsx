@@ -18,6 +18,13 @@ const mygeckoLayout = () => {
           headerBlurEffect: 'extraLight',
         }}
       />
+      <Stack.Screen
+        name="GeckoForm"
+        options={{
+          headerTitle: "",
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 };
