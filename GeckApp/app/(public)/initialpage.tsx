@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
     },
     title: {
+        marginTop:40,
         color: '#000000',
         fontSize: 24,
         fontStyle: 'normal',

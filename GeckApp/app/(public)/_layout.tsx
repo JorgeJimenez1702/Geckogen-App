@@ -20,7 +20,6 @@ const PublicLayout = () => {
           headerTitle:'',
           headerTintColor: '#0076E4',
           headerLargeStyle: {backgroundColor: '#FFF'},
-          headerBackVisible: false,
         }}></Stack.Screen>
       <Stack.Screen
         name="login"
