@@ -19,7 +19,7 @@ const terrarium = () => {
   useEffect(() => {
     const getTerrariums = async () => {
       try {
-        const response = await fetch('https://06ac-187-137-2-145.ngrok-free.app/geckogen-a0538/us-central1/app/api/terrariums');
+        const response = await fetch('https://api-jtnmag5rtq-uc.a.run.app/api/terrariums');
         if (response.ok) {
           const result = await response.json();
           setTerrariums(result);

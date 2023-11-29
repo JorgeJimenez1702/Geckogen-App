@@ -7,7 +7,7 @@ const AddTerrarium = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>ANDO PROBANDO QUE ME SALGA ALGO EN ESTA PANTALLLA</Text>
+      <Text>TEST</Text>
     </View>
   );
 };

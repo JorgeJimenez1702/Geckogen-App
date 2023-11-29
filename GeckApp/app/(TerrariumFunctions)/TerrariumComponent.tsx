@@ -34,7 +34,7 @@ const TerrariumComponent = ( object: {params: {
 
 const styles = StyleSheet.create({
     moduleBox: {
-        width: 341,
+        width: 330,
         height: 84,
         borderRadius: 8,
         borderWidth: 1,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         marginTop: 26,
         marginLeft: 26,
         width: 125,
-        height: 21,
+        height: 40,
         color: '#000',
         fontSize: 22,
         fontStyle: 'normal',

@@ -27,7 +27,7 @@ const TerrariumLayout = () => {
             <Stack.Screen
                 name="TerrariumInterface"
                 options={{
-                    headerTitle: 'Terrarium',
+                    headerTitle: '',
                     headerLeft: () => <BackButton/>
                 }}
             />
