@@ -10,7 +10,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
 import MyGeckoComponent from "../(mygeckoScreens)/myGeckoComponent";
-import AddGecko from "../(mygeckoScreens)/addGecko";
 
 interface geckosInterface {
   userId: string,
@@ -22,18 +21,6 @@ interface geckosInterface {
 }
 
 const MyGecko = () => {
-  /*
-  const params = useLocalSearchParams<GeckoSearchParams>();
-  const [geckoNames, setGeckoNames] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (params.geckoName) {
-      setGeckoNames((prevNames: string[]) => [
-        ...prevNames,
-        ...(params.geckoName ? [params.geckoName] : []),
-      ]);
-    }
-  }, [params.geckoName]);*/
 
   const { user } = useUser();
   const [geckos, setGeckos] = useState<geckosInterface[]>();
@@ -50,10 +37,10 @@ const MyGecko = () => {
           setGeckos(result);
           setIsLoading(false);
         } else {
-          console.error("Failed to fetch terrariums");
+          console.error("Failed to fetch geckos");
         }
       } catch (error) {
-        console.error("Error fetching terrariums:", error);
+        console.error("Error fetching geckos:", error);
       }
     };
     getGeckos();

@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import TerrariumComponent from '../(TerrariumFunctions)/TerrariumComponent';
@@ -48,7 +48,10 @@ const terrarium = () => {
         })
 
       ) : (
-        <Spinner visible={isLoading} />
+        <View>
+            <Text>Oh, looks like you don't have any terrarium!</Text>
+            <Text>Click here to add a new one</Text>
+          </View>
       )}
 
     </ScrollView>

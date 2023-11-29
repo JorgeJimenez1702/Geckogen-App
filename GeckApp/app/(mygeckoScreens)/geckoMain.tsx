@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import GeneralCareSheetModal from './geckoModalCareSheet'; 
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import GeneralCareSheetModal from "./geckoModalCareSheet";
+import { Link, Stack } from "expo-router";
 
+export const BackButton = () => {
+  return (
+      <Link href={"/(auth)/mygecko"} asChild>
+          <Pressable style={{ marginRight: 15 }}>
+              <Ionicons name="chevron-back" size={28} color={'#0076E4'} />
+          </Pressable>
+      </Link>
+  );
+};
 
 const GeckoMain = () => {
-  const [isGeneralCareModalVisible, setGeneralCareModalVisible] = useState(false);
+  const [isGeneralCareModalVisible, setGeneralCareModalVisible] =
+    useState(false);
   const [isEventsModalVisible, setEventsModalVisible] = useState(false);
-
 
   const openGeneralCareModal = () => {
     setGeneralCareModalVisible(true);
@@ -26,11 +36,20 @@ const GeckoMain = () => {
   };
 
   const navigateToEventsModal = () => {
-    openEventsModal(); 
+    openEventsModal();
   };
 
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerTitle: " ",
+          headerTintColor: '#000',
+          headerTransparent: true,
+          headerBlurEffect: 'extraLight',
+          headerLeft: () => <BackButton />,
+        }}
+      />
       <Text style={styles.text}>Apocalypto</Text>
 
       <View style={styles.boxContainer}>
@@ -51,13 +70,23 @@ const GeckoMain = () => {
 
       <View style={styles.additionalBox}>
         <TouchableOpacity onPress={openGeneralCareModal}>
-          <Ionicons name="document-text-outline" size={24} color="black" style={styles.icon} />
+          <Ionicons
+            name="document-text-outline"
+            size={24}
+            color="black"
+            style={styles.icon}
+          />
           <Text style={styles.additionalBoxText}>General care sheet</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.additionalBox}>
-        <Ionicons name="bug-outline" size={24} color="black" style={styles.icon} />
+        <Ionicons
+          name="bug-outline"
+          size={24}
+          color="black"
+          style={styles.icon}
+        />
         <Text style={styles.additionalBoxText}>Feeding</Text>
       </View>
 
@@ -68,8 +97,10 @@ const GeckoMain = () => {
           <View style={styles.upcomingEventItem}>
             <Text style={styles.eventDescription}>Mating season</Text>
             <Text style={styles.eventSubtitle}>Early spring</Text>
-            <Text style={styles.eventDescription}>Take advantage of this spring start to match your gecko.</Text>
-            </View>
+            <Text style={styles.eventDescription}>
+              Take advantage of this spring start to match your gecko.
+            </Text>
+          </View>
         </View>
 
         <View style={styles.division}></View>
@@ -96,16 +127,22 @@ const GeckoMain = () => {
         </View>
       </View>
 
-        <View style={styles.addEventBox}>
+      <View style={styles.addEventBox}>
         <TouchableOpacity onPress={navigateToEventsModal}>
-        <Text style={styles.addEventText}>Add Event</Text>
-        <Ionicons name="add-circle-outline" size={60} color="white" style={styles.iconEvent} />
+          <Text style={styles.addEventText}>Add Event</Text>
+          <Ionicons
+            name="add-circle-outline"
+            size={60}
+            color="white"
+            style={styles.iconEvent}
+          />
         </TouchableOpacity>
       </View>
 
-      
-      <GeneralCareSheetModal isVisible={isGeneralCareModalVisible} closeModal={closeGeneralCareModal} />
-      
+      <GeneralCareSheetModal
+        isVisible={isGeneralCareModalVisible}
+        closeModal={closeGeneralCareModal}
+      />
     </View>
   );
 };
@@ -113,61 +150,61 @@ const GeckoMain = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: -50,
   },
   text: {
-    color: '#000000',
+    color: "#000000",
     fontSize: 34,
-    fontStyle: 'normal',
-    fontWeight: '700',
-    textAlign: 'center',
+    fontStyle: "normal",
+    fontWeight: "700",
+    textAlign: "center",
     paddingTop: 30,
   },
   boxContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 130,
     width: 340,
     marginTop: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 10,
     borderRadius: 10,
   },
   division: {
     flex: 0.01,
-    backgroundColor: '#D9D9D9',
+    backgroundColor: "#D9D9D9",
     marginHorizontal: 5,
   },
   leftBox: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   rightBox: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   largeText: {
     fontSize: 60,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   extraLargeText: {
     fontSize: 30,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   mediumText: {
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   smallText: {
     fontSize: 13,
     marginTop: -2,
   },
   additionalBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     width: 344,
     height: 56,
     borderRadius: 10,
@@ -181,28 +218,28 @@ const styles = StyleSheet.create({
   },
   upcomingEventsBox: {
     marginTop: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 10,
     borderRadius: 10,
   },
   upcomingEventsText: {
     fontSize: 17,
-    fontWeight: '700',
+    fontWeight: "700",
     marginBottom: 10,
   },
   upcomingEventsInnerBox: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     width: 328,
     height: 120,
     marginTop: 10,
   },
   upcomingEventItem: {
-    borderColor: '#E2E2E2',
+    borderColor: "#E2E2E2",
     borderWidth: 1,
     borderRadius: 5,
     padding: 8,
-    marginRight: 10,  
+    marginRight: 10,
     width: 330,
   },
   eventSubtitle: {
@@ -214,12 +251,12 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   eventDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 10,
   },
   detailItem: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   detailText: {
     fontSize: 14,
@@ -230,26 +267,25 @@ const styles = StyleSheet.create({
   },
   addEventBox: {
     marginTop: -8,
-    backgroundColor: '#0076E4',
+    backgroundColor: "#0076E4",
     padding: 7,
     borderRadius: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     width: 150,
   },
   addEventText: {
     fontSize: 17,
     marginLeft: 6,
-    fontWeight: '700',
+    fontWeight: "700",
     color: "#fff",
   },
-  iconEvent:{
-    position: 'absolute',
+  iconEvent: {
+    position: "absolute",
     right: -60,
-    top: '35%',
+    top: "35%",
     transform: [{ translateY: -28 }],
   },
-    
 });
 
 export default GeckoMain;

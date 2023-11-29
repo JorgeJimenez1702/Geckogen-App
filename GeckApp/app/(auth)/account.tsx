@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logOutContainer: {
-    marginTop: 200,
+    marginTop: 150,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

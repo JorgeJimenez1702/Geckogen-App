@@ -17,11 +17,23 @@ export const LogoutButton = () => {
   );
 };
 
-export const AddButton = () => {
+export const AddButtonMyGecko = () => {
   return (
     <View>
       <Link href={"/(mygeckoScreens)/geckoForm"} asChild>
-        <TouchableOpacity style={{ marginLeft: 50 }}>
+        <TouchableOpacity style={{ marginLeft: 10 }}>
+          <Ionicons name="add-circle-outline" size={28} color={"#0076E4"} />
+        </TouchableOpacity>
+      </Link>
+    </View>
+  );
+};
+
+export const AddButtonTerrariums = () => {
+  return (
+    <View>
+      <Link href={"/(TerrariumFunctions)/AddTerrarium"} asChild>
+        <TouchableOpacity style={{ paddingLeft: 10 }}>
           <Ionicons name="add-circle-outline" size={28} color={"#0076E4"} />
         </TouchableOpacity>
       </Link>
@@ -69,7 +81,7 @@ const TabsPage = () => {
             <Ionicons name="ellipse-outline" size={size} color={color} />
           ),
           tabBarLabel: "My Gecko",
-          headerRight: () => <AddButton />,
+          headerRight: () => <AddButtonMyGecko />,
         }}
         redirect={!isSignedIn}
       />
@@ -90,6 +102,7 @@ const TabsPage = () => {
             <Ionicons name="analytics" size={size} color={color} />
           ),
           tabBarLabel: "Terrarium",
+          headerRight: () => <AddButtonTerrariums/>
         }}
         redirect={!isSignedIn}
       />
